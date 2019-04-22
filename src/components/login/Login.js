@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 export default class Login extends Component {
 
     state = {
-        email: "",
-        password: ""
+        userName: "",
+        email: ""
     }
 
-    //Sets ID to be "email"/"password", and the value to be whatever
+    //Sets ID to be "userName"/"email", and the value to be whatever
     //is typed in.
     handleFieldChange = (event) => {
         const stateToChange = {};
@@ -16,15 +16,15 @@ export default class Login extends Component {
     }
     //prevent page reloading,
     //sets login key to "valid", 
-    //converts email/password to JSON
+    //converts userName/email to JSON
     handleLogin = (event) => {
         event.preventDefault();
 
         sessionStorage.setItem(
             "valid",
             JSON.stringify({
-                email: this.state.email,
-                password: this.state.password
+                userName: this.state.userName,
+                email: this.state.email
             })
         )
     }
@@ -34,18 +34,18 @@ export default class Login extends Component {
         return (
             <React.Fragment>
                 <form onSubmit={this.handleLogin}>
-                    <h1>Sign In!</h1>
-                    <label htmlFor="emailInput">Email: </label>
-                    <input onChange={this.handleFieldChange} type="email"
-                        id="email"
-                        placeholder="Email address"
+                    <h1>Sign In</h1>
+                    <label htmlFor="userNameInput">Username: </label>
+                    <input onChange={this.handleFieldChange} type="text"
+                        id="userName"
+                        placeholder="Username"
                         required=""
                         autoFocus=""
                     />
-                    <label htmlFor="passwordInput">Password: </label>
-                    <input onChange={this.handleFieldChange} type="password"
-                        id="password"
-                        placeholder="Password"
+                    <label htmlFor="emailInput">Email: </label>
+                    <input onChange={this.handleFieldChange} type="email"
+                        id="email"
+                        placeholder="Email"
                         required=""
                     />
                     <button type="submit">
