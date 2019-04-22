@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Messages from "./messages/Messages"
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import messageData from "./messages/messageManager"
 
 export default class ApplicationViews extends Component {
 
@@ -27,7 +28,7 @@ export default class ApplicationViews extends Component {
 
     }
 
-    ResourceManager.getAll("messages", currentUserId)
+    messageData.getAllMessages()
       .then(messages => newState.messages = messages)
     ResourceManager.getAll("articles", currentUserId)
       .then(articles => newState.articles = articles)
@@ -82,7 +83,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return <Messages />
+            return <Messages messages={this.state.messages}/>
             // Remove null and return the component which will show the messages
           }}
         />
