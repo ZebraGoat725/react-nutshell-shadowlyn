@@ -1,7 +1,10 @@
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import Login from './login/Login'
 
 export default class ApplicationViews extends Component {
+
+  isAuthenticated = () => sessionStorage.getItem("valid") !== null
 
   render() {
     return (
@@ -9,7 +12,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           exact path="/login" render={props => {
-            return null
+            return <Login />
             // Remove null and return the component which will handle authentication
           }}
         />
