@@ -1,32 +1,14 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-<<<<<<< HEAD
 import TaskList from './Tasks/TaskList'
 import TaskManager from '../modules/TaskManager'
 
-=======
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
->>>>>>> master
 
 export default class ApplicationViews extends Component {
 
   state = {
-<<<<<<< HEAD
-    events: [],
-    tasks: [],
-    news: [],
-    messages: [],
-    friends: []
-  }
-
-  componentDidMount () {
-    const newState = {}
-    TaskManager.getAll()
-    .then(tasks => newState.tasks = tasks)
-    .then(() => this.setState(newState))
-  }
-=======
     users: [],
     messages: [],
     articles: [],
@@ -70,7 +52,6 @@ export default class ApplicationViews extends Component {
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
 
->>>>>>> master
   render() {
     console.log(this.state)
     return (
