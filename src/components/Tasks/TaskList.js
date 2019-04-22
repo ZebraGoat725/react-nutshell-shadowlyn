@@ -4,6 +4,12 @@ export default class TaskList extends Component {
     render () {
         return (
             <React.Fragment>
+                <div className="newTask">
+                <button type="button"
+                    className="taskButton"
+                    onClick={() =>  console.log("This is a button that you just clicked. You're really good at pushing buttons, buddy")
+}
+                </div>
                 <section className="content">
                 {
                 this.props.tasks.map(task =>  
