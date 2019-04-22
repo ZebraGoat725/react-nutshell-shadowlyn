@@ -1,8 +1,167 @@
 {
-  "users": [],
-  "messages": [],
-  "articles": [],
-  "friends": [],
-  "tasks": [],
-  "events": []
+    "users": [
+        {
+            "id": 1,
+            "userName": "chrism",
+            "email": "chris@gmail.com"
+        },
+        {
+            "id": 2,
+            "userName": "samb",
+            "email": "sam@gmail.com"
+        },
+        {
+            "id": 3,
+            "userName": "rosew",
+            "email": "rose@gmail.com"
+        },
+        {
+            "id": 4,
+            "userName": "alext",
+            "email": "alex@gmail.com"
+        }
+    ],
+    "messages": [
+        {
+            "id": 1,
+            "message": "Hello",
+            "userId": 4
+        },
+        {
+            "id": 2,
+            "message": "Happy Monday",
+            "userId": 1
+        },
+        {
+            "id": 3,
+            "message": "Nutshell is FUN",
+            "userId": 2
+        },
+        {
+            "id": 4,
+            "message": "Yoooo",
+            "userId": 3
+        }
+    ],
+    "articles": [
+        {
+            "id": 1,
+            "date": "2019-04-22",
+            "title": "React Nutshell",
+            "synopisis": "Cohort 31 begins React Nutshell project. Team Shadowlyn is crushing it this morning, ready to blow this project out of the water.",
+            "userId": 2
+        },
+        {
+            "id": 2,
+            "date": "2019-03-18",
+            "title": "Chris Lost His Keys",
+            "synopisis": "Chris left his keys in Atlanta over the weekend and had to get them overnighted to his house in Franklin. This was a classic Chris mistake.",
+            "userId": 1
+        },
+        {
+            "id": 3,
+            "date": "2019-02-19",
+            "title": "Capstone Projects",
+            "synopisis": "Cohort 31 will begin working on their capstone projects very soon. After that, we will be top front end developers, masters of their trade.",
+            "userId": 4
+        },
+        {
+            "id": 4,
+            "date": "2019-03-25",
+            "title": "Who the HECK Left the Coffee Pot Empty?",
+            "synopisis": "Jeremiah begins his manhunt for the delinquent(s) who daringly left the coffee pot empty on the burner. Good luck to Jeremiah with his investigation.",
+            "userId": 3
+        }
+    ],
+    "friends": [
+        {
+            "id": 1,
+            "userId": 2,
+            "currentUserId": 1
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "currentUserId": 2
+        },
+        {
+            "id": 3,
+            "userId": 3,
+            "currentUserId": 4
+        },
+        {
+            "id": 4,
+            "userId": 4,
+            "currentUserId": 3
+        }
+    ],
+    "tasks": [
+        {
+          "id": 1,
+          "userId": 1,
+          "task": "Need milk, don't want to buy milk, need to buy a cow for milk",
+          "isComplete": false
+        },
+        {
+          "id": 2,
+          "userId": 2,
+          "task": "Go to Kentucky for some real KFC",
+          "isComplete": false
+        },
+        {
+          "id": 3,
+          "userId": 3,
+          "task": "Learn to make a mix drink, with only one drink",
+          "isComplete": false
+        },
+        {
+          "id": 4,
+          "userId": 4,
+          "task": "go to store without pants on, see if anyone notices",
+          "isComplete": false
+        },
+        {
+          "id": 5,
+          "userId": 3,
+          "task": "buy a house.... steal a house",
+          "isComplete": false
+        }
+      ],
+      "events": [
+        {
+          "id": 1,
+          "userId": 1,
+          "location": "Some Farm in Tennessee",
+          "event": "dude uses hammer, loves it",
+          "url": ""
+        },
+        {
+          "id": 2,
+          "userId": 2,
+          "location": "Waffle House",
+          "event": "man goes to waffleHouse, doesn't go well",
+          "url": ""
+        },
+        {
+          "id": 3,
+          "userId": 3,
+          "location": "House of Cats",
+          "event": "Kid with dream of becoming a cat is disappointed to find out its not possible",
+          "url": ""
+        },
+        {
+          "id": 4,
+          "userId": 4,
+          "location": "Orlando Studios",
+          "event": "CNN discovers bugs bunny isn't actually a bunny, riots break out",
+          "url": ""
+        },
+        {
+          "id": 5,
+          "userId": 2,
+          "location": "Amsterdam",
+          "event": "King of amsterdam doesn't actually give a dam",
+          "url": ""
+        }
+      ]
 }
