@@ -1,11 +1,8 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-<<<<<<< HEAD
 import Messages from "./messages/Messages"
-=======
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
->>>>>>> master
 
 export default class ApplicationViews extends Component {
 
