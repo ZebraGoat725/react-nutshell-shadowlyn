@@ -1,15 +1,63 @@
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import Login from './login/Login'
+import ResourceManager from '../modules/ResourceManager'
 
 export default class ApplicationViews extends Component {
 
+  state = {
+    users: [],
+    messages: [],
+    articles: [],
+    friends: [],
+    tasks: [],
+    events: [],
+    userId: ""
+  }
+
+  componentDidMount() {
+    let currentUserId = sessionStorage.getItem("userID")
+  
+    this.loadAllData(currentUserId)
+  }
+
+  loadAllData = (currentUserId) => {
+    const newState = {
+
+    }
+
+    ResourceManager.getAll("messages", currentUserId)
+      .then(messages => newState.messages = messages)
+    ResourceManager.getAll("articles", currentUserId)
+      .then(articles => newState.articles = articles)
+    ResourceManager.getAll("friends", currentUserId)
+      .then(friends => newState.friends = friends)
+    ResourceManager.getAll("tasks", currentUserId)
+      .then(tasks => newState.tasks = tasks)
+    ResourceManager.getAll("events", currentUserId)
+      .then(events => newState.events = events)
+      .then(() => this.setState(newState))
+  }
+
+  onLogin = () => {
+    this.setState({
+      userId: sessionStorage.getItem("userID")
+    })
+    this.loadAllData(this.state.userId)
+  }
+
+  isAuthenticated = () => sessionStorage.getItem("userID") !== null
+
+
   render() {
+    console.log(this.state)
     return (
       <React.Fragment>
 
         <Route
           exact path="/login" render={props => {
-            return null
+            return <Login users={this.state.users}
+              onLogin={this.onLogin} {...props} />
             // Remove null and return the component which will handle authentication
           }}
         />
@@ -23,8 +71,11 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/friends" render={props => {
-            return null
-            // Remove null and return the component which will show list of friends
+            if (this.isAuthenticated()) {
+              return <div>Hello</div>
+            } else {
+              return <Redirect to="/login" />
+            }
           }}
         />
 
