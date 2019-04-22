@@ -7,8 +7,7 @@ export default class TaskList extends Component {
                 <div className="newTask">
                 <button type="button"
                     className="taskButton"
-                    onClick={() =>  console.log("This is a button that you just clicked. You're really good at pushing buttons, buddy")
-}
+                    onClick = {() => {console.log("This is a button that you just clicked. You're really good at pushing buttons, buddy")} }> Add New Task    </button>
                 </div>
                 <section className="content">
                 {
