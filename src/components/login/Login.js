@@ -20,13 +20,19 @@ export default class Login extends Component {
     handleLogin = (event) => {
         event.preventDefault();
 
-        sessionStorage.setItem(
-            "valid",
-            JSON.stringify({
-                userName: this.state.userName,
-                email: this.state.email
+        fetch("http://localhost:5002/users")
+            .then(response => response.json())
+            .then(userList => {
+                let tempUserName = userList.find(element => element.userName.toLowerCase() === this.state.userName.toLowerCase() && element.email.toLowerCase() === this.state.email.toLowerCase())
+                if (tempUserName) {
+                    sessionStorage.setItem("userID", tempUserName.id)
+                    this.props.onLogin();
+                    this.props.history.push("/friends")
+                } else {
+                    window.alert("NOT FOUND")
+                }
             })
-        )
+
     }
 
     render() {
