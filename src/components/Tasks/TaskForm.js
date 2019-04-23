@@ -3,20 +3,21 @@ import React, {Component} from 'react'
 
 export default class TaskForm extends Component {
     state = {
-        taskName: " ",
-        // isComplete: " ",
+        task: " ",
+        isComplete: " ",
         userId: " "
     };
     // handleFieldChange is a method that sets state to the whatever the value of the input field is.
-    handleFieldChange = task => {
+    handleFieldChange = event => {
         const stateToChange = {}
-        stateToChange[task.target.id] = task.target.value
+        stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
-    constructNewTask (newTask) {
-            newTask = {
+    constructNewTask = (event) => {
+            event.preventDefault()
+            const newTask = {
             task: this.state.task,
-            // isComplete: parseInt(this.state.isComplete),
+            isComplete: "",
             userId: parseInt(this.state.userId)
         }
         this.props
@@ -24,25 +25,26 @@ export default class TaskForm extends Component {
         .then(()=>this.props.history.push("/tasks"))
     }
     render () {
+        console.log(this.state.task)
         return (
             <React.Fragment>
-                <form className="taskForm">
+                <form onSubmit={this.constructNewTask} className="taskForm">
                     <div className="task-div">
-                        <label htmlFor="taskName">Task: </label>
+                        <label htmlFor="task">Task: </label>
                         <input
                         type="text"
                         required
                         className="taskFormInput"
                         onChange={this.handleFieldChange}
-                        id="taskName"
+                        id="task"
+                        value={this.state.task}
                         placeholder="Task Name"></input>
                     </div>
                 <button
                 type="submit"
-                onClick={this.constructNewTask}
                 className="btn btn-primary">
             Submit
-          </button>
+                </button>
                 </form>
             </React.Fragment>
         )

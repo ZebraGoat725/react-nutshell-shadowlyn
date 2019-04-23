@@ -41,13 +41,12 @@ export default class ApplicationViews extends Component {
       .then(events => newState.events = events)
       .then(() => this.setState(newState))
   }
-addTask = task => 
-  TaskManager.post(task)
-  .then(()=>TaskManager.getAll())
-  .then(tasks =>
-    this.setState({
+addTask = task => TaskManager.post(task)
+  .then(()=> TaskManager.getAll())
+  .then(tasks => this.setState({
       tasks: tasks
-    }))
+    })
+    )
 
 onLogin = () => {
   this.setState({
