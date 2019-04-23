@@ -4,6 +4,7 @@ import Messages from "./messages/Messages"
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
 import messageData from "./messages/messageManager"
+import EditMessageForm from "./messages/MessageEditForm"
 
 export default class ApplicationViews extends Component {
 
@@ -57,6 +58,12 @@ export default class ApplicationViews extends Component {
         .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
 
+  handleMessageUpdate = (editedMessage) => {
+    
+    messageData.update(editedMessage)
+    .then(() => this.loadAllData())
+}
+
   render() {
     console.log(this.state)
     return (
@@ -86,11 +93,16 @@ export default class ApplicationViews extends Component {
             }
           }}
         />
-
         <Route
-          path="/messages" render={props => {
-            return <Messages messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
-            // Remove null and return the component which will show the messages
+          exact path="/messages" render={props => {
+            return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            
+          }}
+        />
+        <Route
+          path="/messages/:messageId(\d+)/edit" render={props => {
+            return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            
           }}
         />
 

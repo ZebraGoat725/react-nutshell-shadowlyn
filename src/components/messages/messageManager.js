@@ -13,6 +13,15 @@ const messageData = {
             },
             body: JSON.stringify(message)
         }).then(r => r.json())
+    },
+    update: (message) => {
+        return fetch(`${url}/${message.id}`, {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(message)
+        })
     }
 }
 

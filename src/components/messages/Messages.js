@@ -33,6 +33,7 @@ class Messages extends Component {
         
     }
 
+
     render() {
         return (
             <React.Fragment>
@@ -46,7 +47,9 @@ class Messages extends Component {
                                 return <li className="card-text myMessages" key={message.id}>
                                     <div className="userName">
                                         {this.props.users.find(user => user.id === message.userId).userName}
-                                        <button className="btn edit-button">
+                                        <button onClick={() => {
+                                            this.props.history.push(`/messages/${message.id}/edit`)
+                                        }}className="btn edit-button">
                                         Edit
                                         </button>
                                     </div>
