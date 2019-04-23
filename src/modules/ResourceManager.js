@@ -9,6 +9,11 @@ const API = {
         return fetch(`${baseURL}/${path}/${id}`)
             .then(e => e.json())
     },
+    getAllUsers() {
+        return fetch(`${baseURL}/users`)
+            .then(r => r.json())
+    },
+
     postEntry(obj, path) {
         return fetch(`${baseURL}/${path}`, {
             method: "POST",

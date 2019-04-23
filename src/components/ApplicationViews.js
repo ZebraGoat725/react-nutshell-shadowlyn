@@ -1,7 +1,10 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
+import Messages from "./messages/Messages"
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import messageData from "./messages/messageManager"
+import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
@@ -32,7 +35,7 @@ export default class ApplicationViews extends Component {
 
     }
 
-    ResourceManager.getAll("messages", currentUserId)
+    messageData.getAllMessages()
       .then(messages => newState.messages = messages)
       .then(() => ResourceManager.getAll("articles", currentUserId))
       .then(articles => newState.articles = articles)
@@ -42,6 +45,8 @@ export default class ApplicationViews extends Component {
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
+    ResourceManager.getAllUsers()
+      .then(users => newState.users = users)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("articles", r)))
@@ -64,6 +69,35 @@ export default class ApplicationViews extends Component {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
+  constructNewMessage = (newMessage) => {
+      return messageData.post(newMessage)
+        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+  }
+
+  handleMessageUpdate = (editedMessage) => {
+    
+    messageData.update(editedMessage)
+    .then(() => this.loadAllData())
+}
+
+//  getFriendsUserId = (userId) => {
+//    ResourceManager.getFriendsUserId(userId)
+//    .then(r => this.setState({
+//      friendsUserId: r
+//    }))
+//  }
+  
+  createEvent = (newEvent) => {
+    return ResourceManager.postEntry(newEvent, "events")
+      .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
+      .then(events => {
+        this.setState({
+          events: events
+        })
+      })
+  }
+
+
 addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
 .then(() => ResourceManager.getAll(path, currentUserId))
 .then(obj => {
@@ -71,7 +105,6 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
 })
   
   render() {
-    console.log(this.state)
     return (
       <React.Fragment>
 
@@ -102,11 +135,26 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
             }
           }}
         />
-
         <Route
-          path="/messages" render={props => {
-            return null
-            // Remove null and return the component which will show the messages
+          exact path="/messages" render={props => {
+            if(this.isAuthenticated()){
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            } else {
+                return <Redirect to="/login" />
+            }
+              
+            
+          }}
+        />
+        <Route
+          exact path="/messages/:messageId(\d+)/edit" render={props => {
+            if(this.isAuthenticated()){
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+              
+            
           }}
         />
 
