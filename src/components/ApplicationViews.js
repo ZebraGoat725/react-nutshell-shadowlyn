@@ -5,6 +5,7 @@ import ResourceManager from '../modules/ResourceManager'
 import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
+import ArticleAddNewForm from "./articles/ArticleAddNewForm"
 
 export default class ApplicationViews extends Component {
 
@@ -44,10 +45,12 @@ export default class ApplicationViews extends Component {
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("articles", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsArticles = r)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("events", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
@@ -61,17 +64,12 @@ export default class ApplicationViews extends Component {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
-  createEvent = (newEvent) => {
-    return ResourceManager.postEntry(newEvent, "events")
-      .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
-      .then(events => {
-        this.setState({
-          events: events
-        })
-      })
-  }
-
-
+addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+.then(() => ResourceManager.getAll(path, currentUserId))
+.then(obj => {
+  this.setState({[path]: obj})
+})
+  
   render() {
     console.log(this.state)
     return (
@@ -86,11 +84,14 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          exact path="/" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} />
+          exact path="/articles" render={props => {
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} />
             // Remove null and return the component which will show news articles
           }}
         />
+        <Route path="/articles/new" render={(props) => {
+          return <ArticleAddNewForm addItem={this.addItem} {...props} />
+        }} />
 
         <Route
           path="/friends" render={props => {
