@@ -30,6 +30,8 @@ export default class Articles extends Component {
               <p>{article.synopisis}</p>
               <a href={article.url}>{article.url}</a>
               <p><strong>TimeStamp: </strong>{article.timeStamp}</p>
+              <button onClick={() => this.props.history.push("/articles/edit")}>Edit</button>
+              <button type="button" onClick={() => this.props.deleteItem("articles", article.id)}>Delete</button>
               <hr></hr>
             </div>
           )

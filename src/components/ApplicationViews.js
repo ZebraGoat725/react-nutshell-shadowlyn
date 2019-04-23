@@ -80,12 +80,7 @@ export default class ApplicationViews extends Component {
     .then(() => this.loadAllData())
 }
 
-//  getFriendsUserId = (userId) => {
-//    ResourceManager.getFriendsUserId(userId)
-//    .then(r => this.setState({
-//      friendsUserId: r
-//    }))
-//  }
+
   
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
@@ -103,6 +98,14 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
 .then(obj => {
   this.setState({[path]: obj})
 })
+
+deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
+.then(() => ResourceManager.getAll(path, id))
+.then(r => {
+  this.setState({
+    [path]: r
+  })
+})
   
   render() {
     return (
@@ -118,7 +121,7 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
 
         <Route
           exact path="/articles" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} />
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} />
             // Remove null and return the component which will show news articles
           }}
         />

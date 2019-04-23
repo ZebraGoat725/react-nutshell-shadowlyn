@@ -40,7 +40,6 @@ const API = {
         return fetch(`${baseURL}/${path}/${id}`, {
             method: "DELETE"
         })
-            .then(e => e.json())
     }
 }
 
