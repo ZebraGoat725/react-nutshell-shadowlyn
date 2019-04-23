@@ -10,6 +10,10 @@ class FriendsList extends Component {
                 <div className="card-body">
                 {
                     this.props.friends.map(friend => {
+                    return  <div>
+                                <h4>{friend.user.userName}</h4>
+                                <p>{friend.user.email}</p>
+                            </div>
                         
                     })
                 }
