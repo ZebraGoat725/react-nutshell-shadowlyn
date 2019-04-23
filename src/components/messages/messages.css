@@ -15,3 +15,21 @@ ul  {
     opacity: 0.9;
     color: #3e5869
 }
+
+.message-list {
+    box-sizing: border-box;
+    overflow: scroll;
+    height: 400px
+}
+
+.message-form {
+    display: flex;
+    justify-content: center
+}
+
+.edit-button {
+    font-size: 12px;
+    background-color: #5ea3d0;
+    padding: 0px 0px;
+    margin: 5px;
+}

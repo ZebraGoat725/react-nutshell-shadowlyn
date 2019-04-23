@@ -1,12 +1,14 @@
 import React, { Component } from "react"
+import messageData from "./messageManager"
 import "./messages.css"
 
-const userID = Number(sessionStorage.getItem("userID"))
+
 
 class Messages extends Component {
 
     state = {
-        message: ""
+        message: "",
+        allMessages: []
     }
 
     handleChange = (event) => {
@@ -15,18 +17,18 @@ class Messages extends Component {
         this.setState(stateToChange)
     }
 
+
     handleSubmit = (event) => {
         event.preventDefault();
 
-        
-        
             const message = {
                 message: this.state.message,
-                userId: userID
+                userId: Number(sessionStorage.getItem("userID"))
             }
             this.props.sendMessage(message)
                 .then(() => this.setState({
-                    message: ""
+                    message: "",
+                    allMessages: this.props.messages
                 }))
         
     }
@@ -34,16 +36,19 @@ class Messages extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="card">
+                <div className="card messages">
                     <div className="card-header">
                         Messages
                     </div>
-                    <ul className="card-body">
+                    <ul className="card-body message-list">
                         {this.props.messages.map(message => {
-                            if (message.userId === userID) {
+                            if (message.userId === Number(sessionStorage.getItem("userID"))) {
                                 return <li className="card-text myMessages" key={message.id}>
                                     <div className="userName">
                                         {this.props.users.find(user => user.id === message.userId).userName}
+                                        <button className="btn edit-button">
+                                        Edit
+                                        </button>
                                     </div>
                                     <div className="message">
                                         {message.message}
@@ -61,7 +66,7 @@ class Messages extends Component {
                             }
                         })}
                     </ul>
-                    <form className="card-footer">
+                    <form className="card-footer message-form">
                         <input onChange={this.handleChange}id="message" value={this.state.message} className="input mr-3"></input>
                         <button onClick={this.handleSubmit}className="btn btn-primary">Send</button>
                     </form>

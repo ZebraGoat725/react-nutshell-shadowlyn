@@ -54,10 +54,7 @@ export default class ApplicationViews extends Component {
 
   constructNewMessage = (newMessage) => {
       return messageData.post(newMessage)
-        .then(() => messageData.getAllMessages())
-        .then(messages => this.setState({
-          messages: messages
-        }))
+        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
 
   render() {
