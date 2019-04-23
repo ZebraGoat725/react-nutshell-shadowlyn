@@ -6,5 +6,14 @@ export default {
     },
     get(id) {
         return fetch(`${remoteURL}/tasks/${id}`).then(r=>r.json())
+    },
+    post(newTask) {
+        return fetch(`${remoteURL}/tasks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newTask)
+        }).then(task=>task.json())
     }
 }

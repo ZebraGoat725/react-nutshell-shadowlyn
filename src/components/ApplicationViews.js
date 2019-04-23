@@ -2,9 +2,9 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import TaskList from './Tasks/TaskList'
 import TaskManager from '../modules/TaskManager'
-
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import TaskForm from "./Tasks/TaskForm";
 
 export default class ApplicationViews extends Component {
 
@@ -41,13 +41,20 @@ export default class ApplicationViews extends Component {
       .then(events => newState.events = events)
       .then(() => this.setState(newState))
   }
-
-  onLogin = () => {
+addTask = task => 
+  TaskManager.post(task)
+  .then(()=>TaskManager.getAll())
+  .then(tasks =>
     this.setState({
-      userId: sessionStorage.getItem("userID")
-    })
-    this.loadAllData(this.state.userId)
-  }
+      tasks: tasks
+    }))
+
+onLogin = () => {
+  this.setState({
+    userId: sessionStorage.getItem("userID")
+  })
+  this.loadAllData(this.state.userId)
+}
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
@@ -97,13 +104,18 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          path="/tasks" render={props => {
+          exact path="/tasks" render={props => {
             return <TaskList tasks={this.state.tasks}
             />
             // Remove null and return the component which will show the user's tasks
           }}
         />
 
+        <Route path="/tasks/new" render={(props)=> {
+          return <TaskForm {...props}
+            addTask={this.addTask}
+            />
+        }} />
       </React.Fragment>
     );
   }
