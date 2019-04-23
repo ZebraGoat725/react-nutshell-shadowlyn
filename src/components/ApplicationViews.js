@@ -105,7 +105,7 @@ onLogin = () => {
 
         <Route
           exact path="/tasks" render={props => {
-            return <TaskList tasks={this.state.tasks}
+            return <TaskList {...props} tasks={this.state.tasks}
             />
             // Remove null and return the component which will show the user's tasks
           }}
