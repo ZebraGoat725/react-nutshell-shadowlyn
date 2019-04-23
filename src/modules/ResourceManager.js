@@ -8,6 +8,10 @@ const API = {
  getOneEntry(id, path){
      return fetch(`${baseURL}/${path}/${id}`)
      .then(e => e.json())
+ },
+ getAllUsers(){
+     return fetch(`${baseURL}/users`)
+     .then(r => r.json())
  }
 }
 

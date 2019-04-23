@@ -38,6 +38,8 @@ export default class ApplicationViews extends Component {
       .then(tasks => newState.tasks = tasks)
     ResourceManager.getAll("events", currentUserId)
       .then(events => newState.events = events)
+    ResourceManager.getAllUsers()
+      .then(users => newState.users = users)
       .then(() => this.setState(newState))
   }
 
@@ -50,6 +52,13 @@ export default class ApplicationViews extends Component {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
+  constructNewMessage = (newMessage) => {
+      return messageData.post(newMessage)
+        .then(() => messageData.getAllMessages())
+        .then(messages => this.setState({
+          messages: messages
+        }))
+  }
 
   render() {
     console.log(this.state)
@@ -83,7 +92,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           path="/messages" render={props => {
-            return <Messages messages={this.state.messages}/>
+            return <Messages messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
             // Remove null and return the component which will show the messages
           }}
         />

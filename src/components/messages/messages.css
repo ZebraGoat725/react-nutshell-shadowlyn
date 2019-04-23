@@ -1,0 +1,17 @@
+ul  {
+    list-style-type: none
+}
+
+.message {
+    margin-bottom: 10px;
+    color: white;
+    background-color: #5ea3d0;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.userName {
+    font-size: 10px;
+    opacity: 0.9;
+    color: #3e5869
+}
