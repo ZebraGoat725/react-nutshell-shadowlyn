@@ -1,8 +1,11 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import Messages from "./messages/Messages"
+import TaskList from './Tasks/TaskList'
+import TaskManager from '../modules/TaskManager'
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import TaskForm from "./Tasks/TaskForm";
+import Messages from "./messages/Messages"
 import messageData from "./messages/messageManager"
 import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
@@ -59,13 +62,14 @@ export default class ApplicationViews extends Component {
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
+addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
 
-  onLogin = () => {
-    this.setState({
-      userId: sessionStorage.getItem("userID")
-    })
-    this.loadAllData(this.state.userId)
-  }
+onLogin = () => {
+  this.setState({
+    userId: sessionStorage.getItem("userID")
+  })
+  this.loadAllData(this.state.userId)
+}
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
@@ -170,12 +174,18 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         />
 
         <Route
-          path="/tasks" render={props => {
-            return null
+          exact path="/tasks" render={props => {
+            return <TaskList {...props} tasks={this.state.tasks}
+            />
             // Remove null and return the component which will show the user's tasks
           }}
         />
 
+        <Route path="/tasks/new" render={(props)=> {
+          return <TaskForm {...props}
+            addTask={this.addTask}
+            />
+        }} />
       </React.Fragment>
     );
   }
