@@ -9,6 +9,7 @@ import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+import FriendsList from "./friends/FriendList"
 
 export default class ApplicationViews extends Component {
 
@@ -45,7 +46,7 @@ export default class ApplicationViews extends Component {
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
-    ResourceManager.getAllUsers()
+      .then(() => ResourceManager.getAllUsers())
       .then(users => newState.users = users)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
@@ -129,7 +130,7 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         <Route
           path="/friends" render={props => {
             if (this.isAuthenticated()) {
-              return <div>Hello</div>
+              return <FriendsList {...props} friends={this.state.friends}/>
             } else {
               return <Redirect to="/login" />
             }
