@@ -2,6 +2,7 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import Articles from "./articles/Articles"
 
 export default class ApplicationViews extends Component {
 
@@ -12,12 +13,14 @@ export default class ApplicationViews extends Component {
     friends: [],
     tasks: [],
     events: [],
-    userId: ""
+    userId: "",
+    friendsArticles: [],
+    friendsEvents: []
   }
 
   componentDidMount() {
     let currentUserId = sessionStorage.getItem("userID")
-  
+
     this.loadAllData(currentUserId)
   }
 
@@ -28,14 +31,22 @@ export default class ApplicationViews extends Component {
 
     ResourceManager.getAll("messages", currentUserId)
       .then(messages => newState.messages = messages)
-    ResourceManager.getAll("articles", currentUserId)
+      .then(() => ResourceManager.getAll("articles", currentUserId))
       .then(articles => newState.articles = articles)
-    ResourceManager.getAll("friends", currentUserId)
+      .then(() => ResourceManager.getAll("friends", currentUserId))
       .then(friends => newState.friends = friends)
-    ResourceManager.getAll("tasks", currentUserId)
+      .then(() => ResourceManager.getAll("tasks", currentUserId))
       .then(tasks => newState.tasks = tasks)
-    ResourceManager.getAll("events", currentUserId)
+      .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
+      .then(() => ResourceManager.getFriendsUserId(currentUserId))
+      .then(r => r.map(entry => entry.user.id))
+      .then(r => r.map(r => ResourceManager.getAll("articles", r)))
+      .then(r => newState.friendsArticles = r)
+      .then(() => ResourceManager.getFriendsUserId(currentUserId))
+      .then(r => r.map(entry => entry.user.id))
+      .then(r => r.map(r => ResourceManager.getAll("events", r)))
+      .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
 
@@ -48,7 +59,13 @@ export default class ApplicationViews extends Component {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
-
+//  getFriendsUserId = (userId) => {
+//    ResourceManager.getFriendsUserId(userId)
+//    .then(r => this.setState({
+//      friendsUserId: r
+//    }))
+//  }
+  
   render() {
     console.log(this.state)
     return (
@@ -64,7 +81,7 @@ export default class ApplicationViews extends Component {
 
         <Route
           exact path="/" render={props => {
-            return null
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} />
             // Remove null and return the component which will show news articles
           }}
         />
