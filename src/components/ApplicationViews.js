@@ -40,7 +40,7 @@ export default class ApplicationViews extends Component {
       .then(messages => newState.messages = messages)
       .then(() => ResourceManager.getAll("articles", currentUserId))
       .then(articles => newState.articles = articles)
-      .then(() => ResourceManager.getAll("friends", currentUserId))
+      .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(friends => newState.friends = friends)
       .then(() => ResourceManager.getAll("tasks", currentUserId))
       .then(tasks => newState.tasks = tasks)
