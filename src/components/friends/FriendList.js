@@ -14,8 +14,12 @@ class FriendsList extends Component {
                 {
                     this.props.friends.map(friend => {
                     return  <div key={friend.user.id}>
-                                <h4>{friend.user.userName}</h4>
-                                <p>{friend.user.email}</p>
+                                <span><h4>{friend.user.userName}</h4>
+                                <p>{friend.user.email}</p><button
+                                id={Number(friend.id)} className="btn btn-danger btn-sm mb-2"
+                                onClick={this.props.deleteFriend.bind(this)}
+                                >Delete Friend</button></span>
+                                
                             </div>
                         
                     })

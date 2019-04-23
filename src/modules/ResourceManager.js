@@ -35,7 +35,12 @@ const API = {
           },
           body: JSON.stringify(object)
         }).then(data => data.json())
-      },
+    },
+    deleteItem(path, id) {
+        return fetch(`${baseURL}/${path}/${id}`, {
+            method: "DELETE"
+        })
+    }
 }
 
 export default API

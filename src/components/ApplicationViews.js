@@ -121,12 +121,18 @@ export default class ApplicationViews extends Component {
             .then(friends => this.setState({
                 friends: friends
             }))
-            }
-     else {
-        window.alert("Username not found")
-    }
+            } else {
+                window.alert("Username not found")
+              }
+          }
+      }
   }
-}}
+
+  deleteFriend = (event) => {
+    ResourceManager.deleteItem("friends", Number(event.target.id))
+      .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+      .then(r => this.setState(r))
+  }
 
   
   render() {
@@ -154,7 +160,8 @@ export default class ApplicationViews extends Component {
         <Route
           path="/friends" render={props => {
             if (this.isAuthenticated()) {
-              return <FriendsList {...props} friends={this.state.friends} findFriend={this.findFriend}/>
+              return <FriendsList {...props} friends={this.state.friends} findFriend={this.findFriend}
+              deleteFriend={this.deleteFriend}/>
             } else {
               return <Redirect to="/login" />
             }
