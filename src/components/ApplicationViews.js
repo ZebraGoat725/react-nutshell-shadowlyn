@@ -52,12 +52,7 @@ export default class ApplicationViews extends Component {
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
-addTask = task => TaskManager.post(task)
-  .then(()=> TaskManager.getAll())
-  .then(tasks => this.setState({
-      tasks: tasks
-    })
-    )
+addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
 
 onLogin = () => {
   this.setState({

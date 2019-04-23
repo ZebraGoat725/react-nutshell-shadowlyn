@@ -18,7 +18,7 @@ export default class TaskForm extends Component {
             const newTask = {
             task: this.state.task,
             isComplete: "",
-            userId: parseInt(this.state.userId)
+            userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props
         .addTask(newTask)
