@@ -25,7 +25,6 @@ export default class TaskForm extends Component {
         .then(()=>this.props.history.push("/tasks"))
     }
     render () {
-        console.log(this.state.task)
         return (
             <React.Fragment>
                 <form onSubmit={this.constructNewTask} className="taskForm">

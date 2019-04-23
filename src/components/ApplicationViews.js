@@ -4,11 +4,8 @@ import TaskList from './Tasks/TaskList'
 import TaskManager from '../modules/TaskManager'
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
-<<<<<<< HEAD
 import TaskForm from "./Tasks/TaskForm";
-=======
 import Articles from "./articles/Articles"
->>>>>>> master
 
 export default class ApplicationViews extends Component {
 
