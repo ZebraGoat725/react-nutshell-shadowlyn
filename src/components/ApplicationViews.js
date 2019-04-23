@@ -2,6 +2,8 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import EventForm from './events/EventForm'
+import EventList from './events/EventList'
 
 export default class ApplicationViews extends Component {
 
@@ -17,7 +19,7 @@ export default class ApplicationViews extends Component {
 
   componentDidMount() {
     let currentUserId = sessionStorage.getItem("userID")
-  
+
     this.loadAllData(currentUserId)
   }
 
@@ -47,6 +49,16 @@ export default class ApplicationViews extends Component {
   }
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
+
+  createEvent = (newEvent) => {
+    return ResourceManager.postEntry(newEvent, "events")
+      .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
+      .then(events => {
+        this.setState({
+          events: events
+        })
+      })
+  }
 
 
   render() {
@@ -87,9 +99,13 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          path="/events" render={props => {
-            return null
-            // Remove null and return the component which will show the user's events
+          exact path="/events" render={props => {
+            return <EventList {...props} events={this.state.events} />
+          }}
+        />
+        <Route
+          path="/events/new" render={props => {
+            return <EventForm {...props} createEvent={this.createEvent} />
           }}
         />
 

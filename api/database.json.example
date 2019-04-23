@@ -133,6 +133,7 @@
           "userId": 1,
           "location": "Some Farm in Tennessee",
           "event": "dude uses hammer, loves it",
+          "date": "05-12-2019",
           "url": ""
         },
         {
@@ -140,6 +141,7 @@
           "userId": 2,
           "location": "Waffle House",
           "event": "man goes to waffleHouse, doesn't go well",
+          "date": "05-12-2019",
           "url": ""
         },
         {
@@ -147,6 +149,7 @@
           "userId": 3,
           "location": "House of Cats",
           "event": "Kid with dream of becoming a cat is disappointed to find out its not possible",
+          "date": "05-12-2019",
           "url": ""
         },
         {
@@ -154,6 +157,7 @@
           "userId": 4,
           "location": "Orlando Studios",
           "event": "CNN discovers bugs bunny isn't actually a bunny, riots break out",
+          "date": "05-12-2019",
           "url": ""
         },
         {
@@ -161,6 +165,7 @@
           "userId": 2,
           "location": "Amsterdam",
           "event": "King of amsterdam doesn't actually give a dam",
+          "date": "05-12-2019",
           "url": ""
         }
       ]
