@@ -29,13 +29,19 @@ const API = {
     },
     postItem(path, object) {
         return fetch(`${baseURL}/${path}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(object)
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(object)
         }).then(data => data.json())
-      }
+    },
+    deleteItem(path, id) {
+        return fetch(`${baseURL}/${path}/${id}`, {
+            method: "DELETE"
+        })
+            .then(e => e.json())
+    }
 }
 
 export default API
