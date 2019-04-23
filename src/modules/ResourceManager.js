@@ -14,6 +14,15 @@ const API = {
             .then(r => r.json())
     },
 
+    postEntry(obj, path) {
+        return fetch(`${baseURL}/${path}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(obj)
+        }).then(e => e.json())
+    },
     getFriendsUserId(userId) {
         return fetch(`http://localhost:5002/friends?currentUserId=${userId}&_expand=user`)
             .then(r => r.json())
