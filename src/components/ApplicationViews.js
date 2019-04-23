@@ -8,6 +8,7 @@ import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
+import ArticleAddNewForm from "./articles/ArticleAddNewForm"
 
 export default class ApplicationViews extends Component {
 
@@ -49,10 +50,12 @@ export default class ApplicationViews extends Component {
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("articles", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsArticles = r)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("events", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
@@ -95,6 +98,12 @@ export default class ApplicationViews extends Component {
   }
 
 
+addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+.then(() => ResourceManager.getAll(path, currentUserId))
+.then(obj => {
+  this.setState({[path]: obj})
+})
+  
   render() {
     return (
       <React.Fragment>
@@ -108,11 +117,14 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          exact path="/" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} />
+          exact path="/articles" render={props => {
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} />
             // Remove null and return the component which will show news articles
           }}
         />
+        <Route path="/articles/new" render={(props) => {
+          return <ArticleAddNewForm addItem={this.addItem} {...props} />
+        }} />
 
         <Route
           path="/friends" render={props => {
