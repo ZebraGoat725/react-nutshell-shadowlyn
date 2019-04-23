@@ -20,6 +20,11 @@ export default class EventList extends Component {
                                 </h3>
                                 <div>Where: {event.location}</div>
                                 <div>When: {event.date}</div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        this.props.history.push(`/events/${event.id}/edit`);
+                                    }}>Edit</button>
                             </div>
                         )
                     }
