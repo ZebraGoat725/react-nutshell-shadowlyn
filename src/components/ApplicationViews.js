@@ -65,7 +65,6 @@ export default class ApplicationViews extends Component {
 }
 
   render() {
-    console.log(this.state)
     return (
       <React.Fragment>
 
@@ -95,13 +94,23 @@ export default class ApplicationViews extends Component {
         />
         <Route
           exact path="/messages" render={props => {
-            return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            if(this.isAuthenticated()){
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            } else {
+                return <Redirect to="/login" />
+            }
+              
             
           }}
         />
         <Route
-          path="/messages/:messageId(\d+)/edit" render={props => {
-            return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+          exact path="/messages/:messageId(\d+)/edit" render={props => {
+            if(this.isAuthenticated()){
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+              
             
           }}
         />

@@ -24,7 +24,7 @@ class MessageEditForm extends Component {
         }
 
         this.props.handleMessageUpdate(editedMessage)
-        this.props.location.pathname = "/messages"
+        this.props.history.push("/messages")
     }
 
 
