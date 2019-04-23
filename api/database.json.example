@@ -46,28 +46,32 @@
     "articles": [
         {
             "id": 1,
-            "date": "2019-04-22",
+            "timeStamp": "",
+            "url": "www.meow.com",
             "title": "React Nutshell",
             "synopisis": "Cohort 31 begins React Nutshell project. Team Shadowlyn is crushing it this morning, ready to blow this project out of the water.",
             "userId": 2
         },
         {
             "id": 2,
-            "date": "2019-03-18",
+            "timeStamp": "",
+            "url": "www.meow.com",
             "title": "Chris Lost His Keys",
             "synopisis": "Chris left his keys in Atlanta over the weekend and had to get them overnighted to his house in Franklin. This was a classic Chris mistake.",
             "userId": 1
         },
         {
             "id": 3,
-            "date": "2019-02-19",
+            "timeStamp": "",
+            "url": "www.meow.com",
             "title": "Capstone Projects",
             "synopisis": "Cohort 31 will begin working on their capstone projects very soon. After that, we will be top front end developers, masters of their trade.",
             "userId": 4
         },
         {
             "id": 4,
-            "date": "2019-03-25",
+            "timeStamp": "",
+            "url": "www.meow.com",
             "title": "Who the HECK Left the Coffee Pot Empty?",
             "synopisis": "Jeremiah begins his manhunt for the delinquent(s) who daringly left the coffee pot empty on the burner. Good luck to Jeremiah with his investigation.",
             "userId": 3

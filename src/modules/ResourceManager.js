@@ -17,6 +17,10 @@ const API = {
             },
             body: JSON.stringify(obj)
         }).then(e => e.json())
+    },
+    getFriendsUserId(userId) {
+        return fetch(`http://localhost:5002/friends?currentUserId=${userId}&_expand=user`)
+            .then(r => r.json())
     }
 }
 
