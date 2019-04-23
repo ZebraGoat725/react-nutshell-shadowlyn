@@ -9,6 +9,11 @@ const API = {
         return fetch(`${baseURL}/${path}/${id}`)
             .then(e => e.json())
     },
+    getAllUsers() {
+        return fetch(`${baseURL}/users`)
+            .then(r => r.json())
+    },
+
     postEntry(obj, path) {
         return fetch(`${baseURL}/${path}`, {
             method: "POST",
@@ -19,9 +24,18 @@ const API = {
         }).then(e => e.json())
     },
     getFriendsUserId(userId) {
-        return fetch(`http://localhost:5002/friends?currentUserId=${userId}&_expand=user`)
+        return fetch(`${baseURL}/friends?currentUserId=${userId}&_expand=user`)
             .then(r => r.json())
-    }
+    },
+    postItem(path, object) {
+        return fetch(`${baseURL}/${path}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(object)
+        }).then(data => data.json())
+      }
 }
 
 export default API
