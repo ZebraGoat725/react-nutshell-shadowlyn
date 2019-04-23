@@ -1,7 +1,10 @@
 import React, {Component} from "react"
+import UserSearch from "./UserSearch"
+import ResourceManager from "../../modules/ResourceManager"
 
 class FriendsList extends Component {
 
+    
 
     render() {
         return (
@@ -10,13 +13,16 @@ class FriendsList extends Component {
                 <div className="card-body">
                 {
                     this.props.friends.map(friend => {
-                    return  <div>
+                    return  <div key={friend.user.id}>
                                 <h4>{friend.user.userName}</h4>
                                 <p>{friend.user.email}</p>
                             </div>
                         
                     })
                 }
+                </div>
+                <div className="card-footer">
+                    <UserSearch findFriend={this.props.findFriend}/>
                 </div>
             </div>
         )

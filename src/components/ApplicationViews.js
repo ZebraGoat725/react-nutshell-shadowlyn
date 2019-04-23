@@ -104,6 +104,26 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
 .then(obj => {
   this.setState({[path]: obj})
 })
+
+findFriend = (user) => {
+  if(user.userName){
+      if(window.confirm(`Would you like to add ${user.userName} as a friend?`)){
+
+          const newFriend = {
+              userId: user.id,
+              currentUserId: Number(sessionStorage.getItem("userID"))
+          }
+
+          ResourceManager.postItem("friends", newFriend)
+          .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
+          .then(friends => this.setState({
+              friends: friends
+          }))
+        }
+  } else {
+      window.alert("Username not found")
+  }
+}
   
   render() {
     return (
@@ -130,7 +150,7 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         <Route
           path="/friends" render={props => {
             if (this.isAuthenticated()) {
-              return <FriendsList {...props} friends={this.state.friends}/>
+              return <FriendsList {...props} friends={this.state.friends} findFriend={this.findFriend}/>
             } else {
               return <Redirect to="/login" />
             }

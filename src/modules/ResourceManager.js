@@ -35,7 +35,7 @@ const API = {
           },
           body: JSON.stringify(object)
         }).then(data => data.json())
-      }
+      },
 }
 
 export default API
