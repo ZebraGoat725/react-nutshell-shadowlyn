@@ -2,6 +2,8 @@ import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import EventForm from './events/EventForm'
+import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
 
@@ -109,9 +111,13 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         />
 
         <Route
-          path="/events" render={props => {
-            return null
-            // Remove null and return the component which will show the user's events
+          exact path="/events" render={props => {
+            return <EventList {...props} events={this.state.events} />
+          }}
+        />
+        <Route
+          path="/events/new" render={props => {
+            return <EventForm {...props} createEvent={this.createEvent} />
           }}
         />
 
