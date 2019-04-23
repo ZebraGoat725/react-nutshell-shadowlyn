@@ -5,9 +5,13 @@ import TaskManager from '../modules/TaskManager'
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
 import TaskForm from "./Tasks/TaskForm";
+import Messages from "./messages/Messages"
+import messageData from "./messages/messageManager"
+import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
+import ArticleAddNewForm from "./articles/ArticleAddNewForm"
 
 export default class ApplicationViews extends Component {
 
@@ -34,7 +38,7 @@ export default class ApplicationViews extends Component {
 
     }
 
-    ResourceManager.getAll("messages", currentUserId)
+    messageData.getAllMessages()
       .then(messages => newState.messages = messages)
       .then(() => ResourceManager.getAll("articles", currentUserId))
       .then(articles => newState.articles = articles)
@@ -44,13 +48,17 @@ export default class ApplicationViews extends Component {
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
+    ResourceManager.getAllUsers()
+      .then(users => newState.users = users)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("articles", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsArticles = r)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("events", r)))
+      .then(r => Promise.all(r))
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
@@ -65,6 +73,24 @@ onLogin = () => {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
+  constructNewMessage = (newMessage) => {
+      return messageData.post(newMessage)
+        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+  }
+
+  handleMessageUpdate = (editedMessage) => {
+    
+    messageData.update(editedMessage)
+    .then(() => this.loadAllData())
+}
+
+//  getFriendsUserId = (userId) => {
+//    ResourceManager.getFriendsUserId(userId)
+//    .then(r => this.setState({
+//      friendsUserId: r
+//    }))
+//  }
+  
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
       .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
@@ -76,8 +102,13 @@ onLogin = () => {
   }
 
 
+addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+.then(() => ResourceManager.getAll(path, currentUserId))
+.then(obj => {
+  this.setState({[path]: obj})
+})
+  
   render() {
-    console.log(this.state)
     return (
       <React.Fragment>
 
@@ -90,11 +121,14 @@ onLogin = () => {
         />
 
         <Route
-          exact path="/" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} />
+          exact path="/articles" render={props => {
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} />
             // Remove null and return the component which will show news articles
           }}
         />
+        <Route path="/articles/new" render={(props) => {
+          return <ArticleAddNewForm addItem={this.addItem} {...props} />
+        }} />
 
         <Route
           path="/friends" render={props => {
@@ -105,11 +139,26 @@ onLogin = () => {
             }
           }}
         />
-
         <Route
-          path="/messages" render={props => {
-            return null
-            // Remove null and return the component which will show the messages
+          exact path="/messages" render={props => {
+            if(this.isAuthenticated()){
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            } else {
+                return <Redirect to="/login" />
+            }
+              
+            
+          }}
+        />
+        <Route
+          exact path="/messages/:messageId(\d+)/edit" render={props => {
+            if(this.isAuthenticated()){
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            } else {
+              return <Redirect to="/login" />
+            }
+              
+            
           }}
         />
 
