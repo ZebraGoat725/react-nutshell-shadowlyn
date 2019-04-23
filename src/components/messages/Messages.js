@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import messageData from "./messageManager"
 import "./messages.css"
 
 

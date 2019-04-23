@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import UserSearch from "./UserSearch"
-import ResourceManager from "../../modules/ResourceManager"
+
 
 class FriendsList extends Component {
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import messageData from "./messageManager"
 import resourceManager from "../../modules/ResourceManager"
 
 class MessageEditForm extends Component {

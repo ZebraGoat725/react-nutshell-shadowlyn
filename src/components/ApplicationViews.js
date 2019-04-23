@@ -99,31 +99,35 @@ export default class ApplicationViews extends Component {
   }
 
 
-addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-.then(() => ResourceManager.getAll(path, currentUserId))
-.then(obj => {
-  this.setState({[path]: obj})
-})
+  addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+  .then(() => ResourceManager.getAll(path, currentUserId))
+  .then(obj => {
+    this.setState({[path]: obj})
+  })
 
-findFriend = (user) => {
-  if(user.userName){
-      if(window.confirm(`Would you like to add ${user.userName} as a friend?`)){
+  findFriend = (user) => {
+    if(user.userName){
+      if(user.id === Number(sessionStorage.getItem("userID"))){
+        window.alert("You can't add yourself as a friend.")
+      } else {
+          if(window.confirm(`Would you like to add ${user.userName} as a friend?`)){
+              const newFriend = {
+                userId: user.id,
+                currentUserId: Number(sessionStorage.getItem("userID"))
+              }
 
-          const newFriend = {
-              userId: user.id,
-              currentUserId: Number(sessionStorage.getItem("userID"))
-          }
-
-          ResourceManager.postItem("friends", newFriend)
-          .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
-          .then(friends => this.setState({
-              friends: friends
-          }))
-        }
-  } else {
-      window.alert("Username not found")
+              ResourceManager.postItem("friends", newFriend)
+            .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
+            .then(friends => this.setState({
+                friends: friends
+            }))
+            }
+     else {
+        window.alert("Username not found")
+    }
   }
-}
+}}
+
   
   render() {
     return (
