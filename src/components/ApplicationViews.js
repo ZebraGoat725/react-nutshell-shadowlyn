@@ -3,12 +3,9 @@ import React, { Component } from "react";
 import Messages from "./messages/Messages"
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
-<<<<<<< HEAD
 import messageData from "./messages/messageManager"
 import EditMessageForm from "./messages/MessageEditForm"
-=======
 import Articles from "./articles/Articles"
->>>>>>> master
 
 export default class ApplicationViews extends Component {
 
@@ -45,10 +42,8 @@ export default class ApplicationViews extends Component {
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
-<<<<<<< HEAD
     ResourceManager.getAllUsers()
       .then(users => newState.users = users)
-=======
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("articles", r)))
@@ -57,7 +52,6 @@ export default class ApplicationViews extends Component {
       .then(r => r.map(entry => entry.user.id))
       .then(r => r.map(r => ResourceManager.getAll("events", r)))
       .then(r => newState.friendsEvents = r)
->>>>>>> master
       .then(() => this.setState(newState))
   }
 
@@ -70,7 +64,6 @@ export default class ApplicationViews extends Component {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
-<<<<<<< HEAD
   constructNewMessage = (newMessage) => {
       return messageData.post(newMessage)
         .then(() => this.loadAllData(sessionStorage.getItem("userID")))
@@ -82,7 +75,6 @@ export default class ApplicationViews extends Component {
     .then(() => this.loadAllData())
 }
 
-=======
 //  getFriendsUserId = (userId) => {
 //    ResourceManager.getFriendsUserId(userId)
 //    .then(r => this.setState({
@@ -90,7 +82,6 @@ export default class ApplicationViews extends Component {
 //    }))
 //  }
   
->>>>>>> master
   render() {
     return (
       <React.Fragment>
