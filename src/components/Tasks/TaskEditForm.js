@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
+import TaskManager from '../../modules/TaskManager'
 
-
-export default class TaskForm extends Component {
+export default class EditTaskForm extends Component {
     state = {
         task: " ",
         isComplete: " ",
@@ -14,17 +14,19 @@ export default class TaskForm extends Component {
         this.setState(stateToChange)
     }
     // Over here we are making our new task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
-    constructNewTask = (event) => {
+    UpdateExisitingTask = (event) => {
             event.preventDefault()
             const newTask = {
-            task: this.state.task,
+            task: this.props.match.params.taskId,
             isComplete: "",
             userId: parseInt(sessionStorage.getItem("userID"))
         }
-        this.props
+        this.props.updateTask(editedTask)
         // Over here we're posting our 
-        .addTask(newTask)
         .then(()=>this.props.history.push("/tasks"))
+    }
+    componentDidMount() {
+
     }
     render () {
         return (
