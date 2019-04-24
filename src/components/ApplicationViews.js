@@ -13,12 +13,9 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
-<<<<<<< HEAD
 import TaskEditForm from './Tasks/TaskEditForm'
-=======
 import ArticleEditForm from "./articles/ArticleEditForm"
 
->>>>>>> master
 export default class ApplicationViews extends Component {
 
   state = {
