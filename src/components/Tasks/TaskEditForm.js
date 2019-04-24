@@ -16,7 +16,7 @@ export default class EditTaskForm extends Component {
     // Over here we are making our new task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
     UpdateExisitingTask = (event) => {
             event.preventDefault()
-            const newTask = {
+            const editedTask = {
             task: this.props.match.params.taskId,
             isComplete: "",
             userId: parseInt(sessionStorage.getItem("userID"))
@@ -26,7 +26,7 @@ export default class EditTaskForm extends Component {
         .then(()=>this.props.history.push("/tasks"))
     }
     componentDidMount() {
-
+        TaskManager.get(this.props.match)
     }
     render () {
         return (
