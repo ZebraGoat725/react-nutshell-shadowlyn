@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import TaskManager from '../../modules/TaskManager'
 
-export default class EditTaskForm extends Component {
+export default class TaskEditForm extends Component {
     state = {
         task: " ",
         isComplete: " ",
@@ -13,7 +13,7 @@ export default class EditTaskForm extends Component {
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
-    // Over here we are making our new task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
+    // Over here we are updating our edited task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
     UpdateExisitingTask = (event) => {
             event.preventDefault()
             const editedTask = {
@@ -26,7 +26,15 @@ export default class EditTaskForm extends Component {
         .then(()=>this.props.history.push("/tasks"))
     }
     componentDidMount() {
-        TaskManager.get(this.props.match)
+        TaskManager.get(this.props.match.params.taskId)
+        .then(task => {
+            this.setState({
+                task: task.name,
+                isComplete: "",
+                userId: task.userId
+            })
+            
+        })
     }
     render () {
         return (
@@ -45,8 +53,9 @@ export default class EditTaskForm extends Component {
                     </div>
                 <button
                 type="submit"
+                onClick={this.updateE}
                 className="btn btn-primary">
-            Submit
+            Update
                 </button>
                 </form>
             </React.Fragment>
