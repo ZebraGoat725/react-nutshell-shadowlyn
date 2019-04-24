@@ -13,12 +13,9 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
-<<<<<<< HEAD
 import FriendsList from "./friends/FriendList"
 import Register from "./login/Register"
-=======
 import ArticleEditForm from "./articles/ArticleEditForm"
->>>>>>> master
 
 export default class ApplicationViews extends Component {
 
