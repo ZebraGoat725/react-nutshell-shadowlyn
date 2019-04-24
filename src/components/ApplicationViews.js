@@ -9,6 +9,7 @@ import Messages from "./messages/Messages"
 import messageData from "./messages/messageManager"
 import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
+import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
@@ -74,23 +75,23 @@ onLogin = () => {
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
   constructNewMessage = (newMessage) => {
-      return messageData.post(newMessage)
-        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+    return messageData.post(newMessage)
+      .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
 
   handleMessageUpdate = (editedMessage) => {
-    
-    messageData.update(editedMessage)
-    .then(() => this.loadAllData())
-}
 
-//  getFriendsUserId = (userId) => {
-//    ResourceManager.getFriendsUserId(userId)
-//    .then(r => this.setState({
-//      friendsUserId: r
-//    }))
-//  }
-  
+    messageData.update(editedMessage)
+      .then(() => this.loadAllData())
+  }
+
+  //  getFriendsUserId = (userId) => {
+  //    ResourceManager.getFriendsUserId(userId)
+  //    .then(r => this.setState({
+  //      friendsUserId: r
+  //    }))
+  //  }
+
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
       .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
@@ -100,14 +101,22 @@ onLogin = () => {
         })
       })
   }
+  updateEvent = (eventToUpdate) => {
+    return ResourceManager.updateEntry(eventToUpdate, "events")
+    .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
+    .then(events => {
+      this.setState({
+        events: events
+      })
+    })
+  }
 
+  addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+    .then(() => ResourceManager.getAll(path, currentUserId))
+    .then(obj => {
+      this.setState({ [path]: obj })
+    })
 
-addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-.then(() => ResourceManager.getAll(path, currentUserId))
-.then(obj => {
-  this.setState({[path]: obj})
-})
-  
   render() {
     return (
       <React.Fragment>
@@ -141,24 +150,22 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         />
         <Route
           exact path="/messages" render={props => {
-            if(this.isAuthenticated()){
-              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            if (this.isAuthenticated()) {
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} />
             } else {
-                return <Redirect to="/login" />
+              return <Redirect to="/login" />
             }
-              
-            
+
+
           }}
         />
         <Route
           exact path="/messages/:messageId(\d+)/edit" render={props => {
-            if(this.isAuthenticated()){
-              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            if (this.isAuthenticated()) {
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate} />
             } else {
               return <Redirect to="/login" />
             }
-              
-            
           }}
         />
 
@@ -170,6 +177,12 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         <Route
           path="/events/new" render={props => {
             return <EventForm {...props} createEvent={this.createEvent} />
+          }}
+        />
+
+        <Route
+          path="/events/:eventId(\d+)/edit" render={props => {
+            return <EventEditForm {...props} updateEvent={this.updateEvent} />
           }}
         />
 
