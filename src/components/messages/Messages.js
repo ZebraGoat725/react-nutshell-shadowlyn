@@ -1,14 +1,21 @@
+// Messages Component
+// Author: Chris Morgan
+// The purpose of the Messages component is to build the structure of the chat room. It also contains functionality for sending/editing messages.
+
 import React, { Component } from "react"
 import "./messages.css"
 
-
-
 class Messages extends Component {
+
+    // Initial local state // state.message represents the input field
+    // state.allMessages will contain all user messages.
 
     state = {
         message: "",
         allMessages: []
     }
+
+    // Updates our state.message in real time for the input field. See Register.js for more detailed explanation on how this function works.
 
     handleChange = (event) => {
         const stateToChange = {}
@@ -16,6 +23,15 @@ class Messages extends Component {
         this.setState(stateToChange)
     }
 
+    // When the user clicks submit, we call the handleSubmit function
+    
+    // First, we prevent browser default refresh from occuring.
+    
+    // Next, we create a message object that will be used to make a POST.
+    
+    // The sendMessage function is a prop from ApplicationViews. The sendMessage function is called constructNewMessage in AV.js. It makes a POST, then calls the loadAllData function which updates the ApplicationViews state with the updated message.
+
+    //Then, we update the local state of the Messages component. We set the state.message to be a blank string which clears the input field after the button is clicked, message is posted, and applicationviews state is updated and passed down as props. We pass in the updated props to the local state.allMessages in order to reflect the update.
 
     handleSubmit = (event) => {
         event.preventDefault();

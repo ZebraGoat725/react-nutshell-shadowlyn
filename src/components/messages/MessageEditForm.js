@@ -1,11 +1,20 @@
+// MessageEditForm Component
+// Author: Chris Morgan
+
+// The purpose of the MessageEditForm Component is to create the structure for the form used to edit a user's own message.
+
 import React, { Component } from "react"
 import resourceManager from "../../modules/ResourceManager"
 
 class MessageEditForm extends Component {
 
+    // Initial state of the message form is ""
+
     state = {
         message: ""
     }
+
+    // Updates state based on what is in the input field
 
     handleChange = (event) => {
         const stateToChange = {};
