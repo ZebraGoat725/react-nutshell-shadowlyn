@@ -1,22 +1,8 @@
 import React, { Component } from 'react'
+import TimeStamp from "./TimeStamp"
 
 export default class ArticleAddNewForm extends Component {
-  getDate = (date) => {
-    let monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
-    ];
-  
-    let day = date.getDate();
-    let monthIndex = date.getMonth();
-    let year = date.getFullYear();
-    let hour = date.getHours()
-    let minutes = date.getMinutes()
-  
-    return day + ' ' + monthNames[monthIndex] + ' ' + year + " " + hour + ":" + minutes;
-  }
+
 
     state = {
         title: "",
@@ -24,12 +10,14 @@ export default class ArticleAddNewForm extends Component {
         url: ""
     }
 
+    //updates state as user types
     handleChange = event => {
         let newState = {}
         newState[event.target.id] = event.target.value
         this.setState(newState)
     }
 
+    //function is called when user submit. creates object to POST and calls function to update state in application view and re routes user to /articles
     postNewItem = event => {
       
         event.preventDefault()
@@ -39,7 +27,7 @@ export default class ArticleAddNewForm extends Component {
             synopsis: this.state.synopsis,
             url: this.state.url,
             userId: parseInt(sessionStorage.getItem("userID")),
-            timeStamp: this.getDate(new Date())
+            timeStamp: TimeStamp.getDate(new Date())
         }
 
         this.props.addItem("articles", object, sessionStorage.getItem("userID"))

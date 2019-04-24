@@ -13,8 +13,12 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+<<<<<<< HEAD
 import FriendsList from "./friends/FriendList"
 import Register from "./login/Register"
+=======
+import ArticleEditForm from "./articles/ArticleEditForm"
+>>>>>>> master
 
 export default class ApplicationViews extends Component {
 
@@ -43,7 +47,7 @@ export default class ApplicationViews extends Component {
 
     messageData.getAllMessages()
       .then(messages => newState.messages = messages)
-      .then(() => ResourceManager.getAll("articles", currentUserId))
+      .then(() => ResourceManager.getSortedArticles(currentUserId))
       .then(articles => newState.articles = articles)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(friends => newState.friends = friends)
@@ -90,14 +94,7 @@ onLogin = () => {
     messageData.update(editedMessage)
       .then(() => this.loadAllData())
   }
-
-  //  getFriendsUserId = (userId) => {
-  //    ResourceManager.getFriendsUserId(userId)
-  //    .then(r => this.setState({
-  //      friendsUserId: r
-  //    }))
-  //  }
-
+  
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
       .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
@@ -117,14 +114,13 @@ onLogin = () => {
     })
   }
 
-  addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-    .then(() => ResourceManager.getAll(path, currentUserId))
-    .then(obj => {
-      this.setState({ [path]: obj })
-    })
+  
+  //function is called in ArticleAddNewForm. it performs a post request, then gets all updated data and setState to re render Articles with updated
+addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+.then(() => this.loadAllData(currentUserId))
 
 
-  // The findFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
+  // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
 
   // Next we get the updated list of the user's friends by doing a GET call. Then we take the promise value and update the local state with the response. This state will be used as a prop. If the username isn't found, it will alert the user.
 
@@ -169,6 +165,23 @@ onLogin = () => {
     }))
   }
 
+//function is called when delete button is click, performs delete method, then re loads data with new state
+deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
+.then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
+.then(r => {
+  this.setState({
+    [path]: r
+  })
+})
+
+//function is called when edit form is saved. performs PUT method and re loads data with new state
+updateItem = (path, object) => ResourceManager.putItem(path, object)
+.then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
+.then(r => {
+  this.setState({
+    [path]: r
+  })
+})
   
   render() {
     return (
@@ -191,12 +204,15 @@ onLogin = () => {
 
         <Route
           exact path="/articles" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} />
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} />
             // Remove null and return the component which will show news articles
           }}
         />
-        <Route path="/articles/new" render={(props) => {
+        <Route exact path="/articles/new" render={(props) => {
           return <ArticleAddNewForm addItem={this.addItem} {...props} />
+        }} />
+        <Route path="/articles/edit/:articleId(\d+)" render={(props) => {
+          return <ArticleEditForm updateItem={this.updateItem} {...props} />
         }} />
 
         <Route

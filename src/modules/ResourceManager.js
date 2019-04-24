@@ -45,10 +45,23 @@ const API = {
             body: JSON.stringify(object)
         }).then(data => data.json())
     },
-    deleteItem:(path, id) => {
+    deleteItem(path, id) {
         return fetch(`${baseURL}/${path}/${id}`, {
             method: "DELETE"
         })
+    },
+    getSortedArticles(id) {
+        return fetch(`${baseURL}/articles?userId=${id}&_sort=timeStamp&_order=des`)
+            .then(e => e.json())
+    },
+    putItem(path, object) {
+        return fetch(`${baseURL}/${path}/${object.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(object)
+        }).then(data => data.json())
     }
 }
 
