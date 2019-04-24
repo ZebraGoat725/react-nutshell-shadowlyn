@@ -1,11 +1,20 @@
+// UserSearch Component
+// Author: Chris Morgan
+
+// The UserSearch component is meant to carry out the functionality and structure rendering of the search form within the FriendsList component.
+
 import React, {Component} from "react"
 import ResourceManager from "../../modules/ResourceManager"
 
 class UserSearch extends Component {
 
+    // Local initial state is set to blank. This reflects the user input of the search by username field.
+
     state = {
         searchBy: ""
     }
+
+    // Updates local state based on changes of the search input
 
     handleChange = (event) => {
         const stateToChange = {};
@@ -13,7 +22,7 @@ class UserSearch extends Component {
         this.setState(stateToChange)
     }
 
-    
+    //  handleAddFriend is meant POST the new friends object to the database. It will grab the userlist before the POST, and find the user that matches the username in the search input. Then it will take that match, and call the addFriend function in order to carry out the POST. Check ApplicationViews.js to see the description of this function. After the POST is complete, we update the local state.searchBy to a blank string, which clears the input field.
 
     handleAddFriend = (event) => {
         event.preventDefault();
@@ -21,7 +30,7 @@ class UserSearch extends Component {
             
         ResourceManager.getAllUsers()
             .then(userList => userList.find(user => user.userName.toLowerCase() === this.state.searchBy.toLowerCase()))
-            .then(match => this.props.findFriend(match))
+            .then(match => this.props.addFriend(match))
             .then(() => this.setState({
                 searchBy: ""
             }))

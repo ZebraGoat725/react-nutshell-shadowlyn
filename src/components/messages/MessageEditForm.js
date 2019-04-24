@@ -22,6 +22,8 @@ class MessageEditForm extends Component {
         this.setState(stateToChange)
     }
 
+    // When the user hits submit button, handleUpdate is called. We prevent browser default first. Then we create the editedMessage object with the id being the messageId from props.match.params. This will be the id of the message we are trying to edit. The message: will reflect the state.message / userinput. The userId is the userID from sessionStorage because a user can only edit his/her own messages.
+
     handleUpdate = (event) => {
         event.preventDefault();
 
@@ -35,6 +37,7 @@ class MessageEditForm extends Component {
         this.props.history.push("/messages")
     }
 
+    // componentDidMount is used to get the content of the message we are trying to edit and pass it in to our local state. This allows the form to be populated with the message already. 
 
     componentDidMount () {
         resourceManager.getOneEntry(Number(this.props.match.params.messageId), "messages").then(response => {
@@ -47,10 +50,10 @@ class MessageEditForm extends Component {
 
     render(){
         return (
-            <React.Fragment>
+            <div className="card">
+                <div className="card-header">Edit Message</div>
                 <form>
-                    <div>
-                        <label htmlFor="message">Edit Message</label>
+                    <div className="card-body">
                         <input 
                             type="text"
                             className="form-control"
@@ -58,15 +61,16 @@ class MessageEditForm extends Component {
                             id="message"
                             value={this.state.message}
                         />
-                    </div>
-                    <button
+                        <button
                         type="button"
                         onClick={this.handleUpdate}
                         className="btn btn-primary mt-2"
-                    >Submit
+                    >Send
                     </button>
+                    </div>
+                    
                 </form>
-            </React.Fragment>
+            </div>
         )
     }
 

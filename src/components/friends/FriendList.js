@@ -1,3 +1,8 @@
+// FriendList Component
+// Author: Chris Morgan
+
+// The FriendList component is used to create the structure of the friends list section. It uses this.props.friends to display all of the current user's friends.
+
 import React, {Component} from "react"
 import UserSearch from "./UserSearch"
 
