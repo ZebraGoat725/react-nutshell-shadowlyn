@@ -9,7 +9,9 @@ import UserSearch from "./UserSearch"
 
 class FriendsList extends Component {
 
-    
+    handleDelete = (event) => {
+        this.props.deleteFriend(event.target.id)
+    }
 
     render() {
         return (
@@ -22,7 +24,7 @@ class FriendsList extends Component {
                                 <span><h4>{friend.user.userName}</h4>
                                 <p>{friend.user.email}</p><button
                                 id={friend.id} className="btn btn-danger btn-sm mb-2"
-                                onClick={this.props.deleteFriend}
+                                onClick={this.handleDelete}
                                 >Delete Friend</button></span>
                                 
                             </div>

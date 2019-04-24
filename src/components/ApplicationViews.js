@@ -153,10 +153,9 @@ onLogin = () => {
 
   // The deleteFriend function is passed down to the Friends Component. This handles the functionality of making a DELETE call, and then loading all the updated data from the database with loadAllData. Then updating local state with the promise value.
 
-  deleteFriend = (event) => {
-    ResourceManager.deleteItem("friends", event.target.id)
+  deleteFriend = (id) => {
+    return ResourceManager.deleteItem("friends", id)
       .then(() => this.loadAllData(sessionStorage.getItem("userID")))
-      .then(response => this.setState(response))
   }
 
   // The registerUser function is passed down as a prop to Register.js
