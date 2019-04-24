@@ -79,6 +79,7 @@ updateTask = (editedTaskObject) => {
       })
     })
 })}
+
 onLogin = () => {
   this.setState({
     userId: sessionStorage.getItem("userID")
