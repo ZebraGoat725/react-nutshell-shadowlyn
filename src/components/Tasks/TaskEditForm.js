@@ -26,14 +26,13 @@ export default class TaskEditForm extends Component {
             userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props.updateTask(editedTask)
-        // Over here we're pushing our newly updated task object into the URL that ends with /tasks
+        // Over here we are changing our route to the path that the task component lives in. The task component is rendered with the updated state, letting us see our freshly updated task.
         .then(()=>this.props.history.push("/tasks"))
     }
-    // Since we're pre-filling our input fields with data that already exists in our database, we can call componentDidMount and make that GET call in this component. It's not adding a new object, so it's totally chill to do that here.
+    // Since we're pre-filling our input fields with data that already exists in our database, we can call componentDidMount and make that GET call in this component. It's not adding a new object, so it's totally chill to do that here. componentDidMount runs after our render and updates our state, as componentDidMount does.
     componentDidMount() {
         TaskManager.get(this.props.match.params.taskId)
         .then(task => {
-            console.log(task)
             this.setState({
                 task: task.task,
                 isComplete: "",
