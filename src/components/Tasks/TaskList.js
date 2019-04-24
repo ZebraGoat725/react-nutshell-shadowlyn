@@ -28,6 +28,6 @@ export default class TaskList extends Component {
                 </section>
             </React.Fragment>
             
-        )
+        ) 
     }
 }
