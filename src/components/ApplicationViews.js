@@ -245,7 +245,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
 
         <Route
           exact path="/events" render={props => {
-            return <EventList {...props} events={this.state.events} />
+            return <EventList {...props} users = {this.state.users} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
           }}
         />
         <Route
