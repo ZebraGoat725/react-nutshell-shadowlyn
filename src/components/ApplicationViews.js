@@ -131,7 +131,7 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
 
   // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it checks the current user's friends to make sure they aren't already friends. If they are friends, this process will not work and will alert the user. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
 
-  // Next we get the updated list of the user's friends by doing a GET call. Then we take the promise value and update the local state with the response. This state will be used as a prop. If the username isn't found, it will alert the user.
+  // Next we get the updated list of the user's friends, friendsEvents, and friendsArticles by calling this.loadAllData(). This function will update the state, which will then update the props in their respective components. If the username isn't found, it will alert the user.
 
   addFriend = (user) => {
     if(user.userName){
