@@ -13,6 +13,7 @@ export default class TaskForm extends Component {
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
+    // Over here we are making our new task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
     constructNewTask = (event) => {
             event.preventDefault()
             const newTask = {
@@ -21,6 +22,7 @@ export default class TaskForm extends Component {
             userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props
+        // Over here we're posting our 
         .addTask(newTask)
         .then(()=>this.props.history.push("/tasks"))
     }
