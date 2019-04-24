@@ -1,11 +1,15 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import Messages from "./messages/Messages"
+import TaskList from './Tasks/TaskList'
+import TaskManager from '../modules/TaskManager'
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import TaskForm from "./Tasks/TaskForm";
+import Messages from "./messages/Messages"
 import messageData from "./messages/messageManager"
 import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
+import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
@@ -60,26 +64,34 @@ export default class ApplicationViews extends Component {
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
+addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
 
-  onLogin = () => {
-    this.setState({
-      userId: sessionStorage.getItem("userID")
-    })
-    this.loadAllData(this.state.userId)
-  }
+onLogin = () => {
+  this.setState({
+    userId: sessionStorage.getItem("userID")
+  })
+  this.loadAllData(this.state.userId)
+}
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
   constructNewMessage = (newMessage) => {
-      return messageData.post(newMessage)
-        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+    return messageData.post(newMessage)
+      .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
 
   handleMessageUpdate = (editedMessage) => {
-    
+
     messageData.update(editedMessage)
-    .then(() => this.loadAllData())
-}
+      .then(() => this.loadAllData())
+  }
+
+  //  getFriendsUserId = (userId) => {
+  //    ResourceManager.getFriendsUserId(userId)
+  //    .then(r => this.setState({
+  //      friendsUserId: r
+  //    }))
+  //  }
 
 
   
@@ -92,7 +104,21 @@ export default class ApplicationViews extends Component {
         })
       })
   }
+  updateEvent = (eventToUpdate) => {
+    return ResourceManager.updateEntry(eventToUpdate, "events")
+    .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
+    .then(events => {
+      this.setState({
+        events: events
+      })
+    })
+  }
 
+  addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
+    .then(() => ResourceManager.getAll(path, currentUserId))
+    .then(obj => {
+      this.setState({ [path]: obj })
+    })
 
 addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
 // .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
@@ -153,24 +179,22 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
         />
         <Route
           exact path="/messages" render={props => {
-            if(this.isAuthenticated()){
-              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            if (this.isAuthenticated()) {
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} />
             } else {
-                return <Redirect to="/login" />
+              return <Redirect to="/login" />
             }
-              
-            
+
+
           }}
         />
         <Route
           exact path="/messages/:messageId(\d+)/edit" render={props => {
-            if(this.isAuthenticated()){
-              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            if (this.isAuthenticated()) {
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate} />
             } else {
               return <Redirect to="/login" />
             }
-              
-            
           }}
         />
 
@@ -186,12 +210,24 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
         />
 
         <Route
-          path="/tasks" render={props => {
-            return null
+          path="/events/:eventId(\d+)/edit" render={props => {
+            return <EventEditForm {...props} updateEvent={this.updateEvent} />
+          }}
+        />
+
+        <Route
+          exact path="/tasks" render={props => {
+            return <TaskList {...props} tasks={this.state.tasks}
+            />
             // Remove null and return the component which will show the user's tasks
           }}
         />
 
+        <Route path="/tasks/new" render={(props)=> {
+          return <TaskForm {...props}
+            addTask={this.addTask}
+            />
+        }} />
       </React.Fragment>
     );
   }
