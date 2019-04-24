@@ -1,11 +1,15 @@
 import { Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
-import Messages from "./messages/Messages"
+import TaskList from './Tasks/TaskList'
+import TaskManager from '../modules/TaskManager'
 import Login from './login/Login'
 import ResourceManager from '../modules/ResourceManager'
+import TaskForm from "./Tasks/TaskForm";
+import Messages from "./messages/Messages"
 import messageData from "./messages/messageManager"
 import EditMessageForm from "./messages/MessageEditForm"
 import EventForm from './events/EventForm'
+import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
@@ -61,38 +65,39 @@ export default class ApplicationViews extends Component {
       .then(r => newState.friendsEvents = r)
       .then(() => this.setState(newState))
   }
+addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
 
-  onLogin = () => {
-    this.setState({
-      userId: sessionStorage.getItem("userID")
-    })
-    this.loadAllData(this.state.userId)
-  }
+onLogin = () => {
+  this.setState({
+    userId: sessionStorage.getItem("userID")
+  })
+  this.loadAllData(this.state.userId)
+}
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
   // Passed down as a prop to Messages component. This will post the new message to the database, then it will refresh state with the loadAllData function.
 
   constructNewMessage = (newMessage) => {
-      return messageData.post(newMessage)
-        .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+    return messageData.post(newMessage)
+      .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
 
   // Passed down to the MessageEditForm component. This will do a PUT request with the editedMessage, then call the loadAllData function to update the state with the updated data.
 
   handleMessageUpdate = (editedMessage) => {
-    
-    messageData.update(editedMessage)
-    .then(() => this.loadAllData())
-}
 
-//  getFriendsUserId = (userId) => {
-//    ResourceManager.getFriendsUserId(userId)
-//    .then(r => this.setState({
-//      friendsUserId: r
-//    }))
-//  }
-  
+    messageData.update(editedMessage)
+      .then(() => this.loadAllData())
+  }
+
+  //  getFriendsUserId = (userId) => {
+  //    ResourceManager.getFriendsUserId(userId)
+  //    .then(r => this.setState({
+  //      friendsUserId: r
+  //    }))
+  //  }
+
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
       .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
@@ -102,13 +107,22 @@ export default class ApplicationViews extends Component {
         })
       })
   }
-
+  updateEvent = (eventToUpdate) => {
+    return ResourceManager.updateEntry(eventToUpdate, "events")
+    .then(() => ResourceManager.getAll("events", sessionStorage.getItem("userID")))
+    .then(events => {
+      this.setState({
+        events: events
+      })
+    })
+  }
 
   addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-  .then(() => ResourceManager.getAll(path, currentUserId))
-  .then(obj => {
-    this.setState({[path]: obj})
-  })
+    .then(() => ResourceManager.getAll(path, currentUserId))
+    .then(obj => {
+      this.setState({ [path]: obj })
+    })
+
 
   // The findFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
 
@@ -198,24 +212,22 @@ export default class ApplicationViews extends Component {
         />
         <Route
           exact path="/messages" render={props => {
-            if(this.isAuthenticated()){
-              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage}/>
+            if (this.isAuthenticated()) {
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} />
             } else {
-                return <Redirect to="/login" />
+              return <Redirect to="/login" />
             }
-              
-            
+
+
           }}
         />
         <Route
           exact path="/messages/:messageId(\d+)/edit" render={props => {
-            if(this.isAuthenticated()){
-              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate}/>
+            if (this.isAuthenticated()) {
+              return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate} />
             } else {
               return <Redirect to="/login" />
             }
-              
-            
           }}
         />
 
@@ -231,12 +243,24 @@ export default class ApplicationViews extends Component {
         />
 
         <Route
-          path="/tasks" render={props => {
-            return null
+          path="/events/:eventId(\d+)/edit" render={props => {
+            return <EventEditForm {...props} updateEvent={this.updateEvent} />
+          }}
+        />
+
+        <Route
+          exact path="/tasks" render={props => {
+            return <TaskList {...props} tasks={this.state.tasks}
+            />
             // Remove null and return the component which will show the user's tasks
           }}
         />
 
+        <Route path="/tasks/new" render={(props)=> {
+          return <TaskForm {...props}
+            addTask={this.addTask}
+            />
+        }} />
       </React.Fragment>
     );
   }

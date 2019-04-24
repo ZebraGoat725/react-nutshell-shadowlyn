@@ -23,17 +23,26 @@ const API = {
             body: JSON.stringify(obj)
         }).then(e => e.json())
     },
+    updateEntry(obj, path) {
+        return fetch(`${baseURL}/${path}/${obj.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(obj)
+        }).then(e => e.json());
+    },
     getFriendsUserId(userId) {
         return fetch(`${baseURL}/friends?currentUserId=${userId}&_expand=user`)
             .then(r => r.json())
     },
     postItem(path, object) {
         return fetch(`${baseURL}/${path}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(object)
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(object)
         }).then(data => data.json())
     },
     deleteItem:(path, id) => {
