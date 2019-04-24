@@ -1,3 +1,7 @@
+//  Register Component
+//  Author: Chris Morgan
+//  The Purpose of the Register component is to build the structure of the regisitration form. It also has functionality for authentication as well as setting the userID to sessionStorage
+
 import React, { Component } from "react"
 import resourceManager from "../../modules/ResourceManager"
 
@@ -27,6 +31,7 @@ class Register extends Component {
             } else if(this.state.username === "" || this.state.email === ""){
                 window.alert("You left a field blank!")
             } else {
+                console.log(isMatch)
                 let newUser = {
                     userName: this.state.username,
                     email: this.state.email
@@ -34,7 +39,7 @@ class Register extends Component {
                 this.props.registerUser(newUser)
                 .then(() => resourceManager.getAllUsers())
                 .then(r => r.find(user => user.userName === this.state.username))
-                .then(r => sessionStorage.setItem("userID", r.id))
+                .then(matchedUserInfo => sessionStorage.setItem("userID", matchedUserInfo.id))
                 .then(() => this.props.onLogin())
                 .then(() => this.props.history.push("/articles"))
             }
