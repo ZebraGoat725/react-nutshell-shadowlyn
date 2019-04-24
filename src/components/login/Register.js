@@ -21,7 +21,9 @@ class Register extends Component {
         .then(userList => {
             let isMatch = userList.find(user => user.userName.toLowerCase() === this.state.username.toLowerCase())
             if(isMatch){
-                window.alert("This login information already exists! Please go back to login page.")
+                window.alert("This username already exists! Please go back to login page.")
+            } else if (userList.find(user => user.email.toLowerCase() === this.state.email.toLowerCase())) {
+                window.alert("This email already exists") 
             } else if(this.state.username === "" || this.state.email === ""){
                 window.alert("You left a field blank!")
             } else {
