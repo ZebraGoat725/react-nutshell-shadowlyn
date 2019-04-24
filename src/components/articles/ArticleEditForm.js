@@ -34,19 +34,19 @@ export default class ArticleEditForm extends Component {
         }
 
         this.props.updateItem("articles", object)
-        .then(() => this.props.history.push("/articles"))
+            .then(() => this.props.history.push("/articles"))
     }
 
     //performs fetch call to pre fill the input fields with data
     componentDidMount() {
         ResourceManager.getOneEntry(this.props.match.params.articleId, "articles")
-        .then(r => {
-            this.setState({
-                url: r.url,
-                title: r.title,
-                synopsis: r.synopsis
+            .then(r => {
+                this.setState({
+                    url: r.url,
+                    title: r.title,
+                    synopsis: r.synopsis
+                })
             })
-        })
     }
 
     //creates form
@@ -54,13 +54,19 @@ export default class ArticleEditForm extends Component {
         return (
             <React.Fragment>
                 <form onSubmit={this.updateArticle}>
-                    <label>Article title: </label>
-                    <input type="text" value={this.state.title} id="title" onChange={this.handleChange} />
-                    <label>Article synopsis: </label>
-                    <input type="text" value={this.state.synopsis} id="synopsis" onChange={this.handleChange} />
-                    <label>Article URL: </label>
-                    <input type="text" value={this.state.url} id="url" onChange={this.handleChange} />
-                    <button type="submit">Save Changes</button>
+                    <div className="form-group">
+                        <label>Article title: </label>
+                        <input className="form-control" type="text" value={this.state.title} id="title" onChange={this.handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>Article synopsis: </label>
+                        <input className="form-control" type="text" value={this.state.synopsis} id="synopsis" onChange={this.handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>Article URL: </label>
+                        <input className="form-control" type="text" value={this.state.url} id="url" onChange={this.handleChange} />
+                    </div>
+                    <button className="btn btn-primary" type="submit">Save Changes</button>
                 </form>
 
             </React.Fragment>
