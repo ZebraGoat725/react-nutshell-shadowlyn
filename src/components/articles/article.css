@@ -1,0 +1,8 @@
+.addNewButton {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonClass{
+    max-width: 80%;
+}
