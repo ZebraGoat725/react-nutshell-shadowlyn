@@ -31,26 +31,33 @@ export default class EventForm extends Component {
     render() {
         return (
             <React.Fragment>
-                <div>
-                    <form>
+                <form>
+                    <div className="form-group">
                         <label htmlFor="nameInput">Event Name</label>
-                        <input type="text"
+                        <input className="form-control"
+                            type="text"
                             id="event"
                             required
                             onChange={this.handleFieldChange} />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="dateInput">Event Date</label>
-                        <input type="date"
+                        <input className="form-control"
+                            type="date"
                             id="date"
                             required
                             onChange={this.handleFieldChange} />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="locationInput">Event Location</label>
-                        <input type="text"
+                        <input className="form-control"
+                            type="text"
                             id="location"
                             required
                             onChange={this.handleFieldChange} />
-                        <button onClick={this.handleSubmit}>Submit New Event</button>
-                    </form>
-                </div>
+                    </div>
+                    <button onClick={this.handleSubmit}>Submit New Event</button>
+                </form>
             </React.Fragment>
         )
     }

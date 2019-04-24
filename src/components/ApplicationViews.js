@@ -171,7 +171,7 @@ onLogin = () => {
 
         <Route
           exact path="/events" render={props => {
-            return <EventList {...props} events={this.state.events} />
+            return <EventList {...props} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
           }}
         />
         <Route
