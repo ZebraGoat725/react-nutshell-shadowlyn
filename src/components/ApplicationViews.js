@@ -125,6 +125,8 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
     if(user.userName){
       if(user.id === Number(sessionStorage.getItem("userID"))){
         window.alert("You can't add yourself as a friend.")
+      } else if (this.state.friends.find(friend => friend.user.userName.toLowerCase() === user.userName)) {
+          window.alert("You already have this user as a friend.")
       } else {
           if(window.confirm(`Would you like to add ${user.userName} as a friend?`)){
               const newFriend = {
@@ -225,7 +227,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
         <Route
           exact path="/messages" render={props => {
             if (this.isAuthenticated()) {
-              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} />
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} addFriend={this.addFriend}/>
             } else {
               return <Redirect to="/login" />
             }
