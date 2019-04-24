@@ -9,6 +9,7 @@ import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+import ArticleEditForm from "./articles/ArticleEditForm"
 
 export default class ApplicationViews extends Component {
 
@@ -37,7 +38,7 @@ export default class ApplicationViews extends Component {
 
     messageData.getAllMessages()
       .then(messages => newState.messages = messages)
-      .then(() => ResourceManager.getAll("articles", currentUserId))
+      .then(() => ResourceManager.getSortedArticles(currentUserId))
       .then(articles => newState.articles = articles)
       .then(() => ResourceManager.getAll("friends", currentUserId))
       .then(friends => newState.friends = friends)
@@ -94,13 +95,22 @@ export default class ApplicationViews extends Component {
 
 
 addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-.then(() => ResourceManager.getAll(path, currentUserId))
-.then(obj => {
-  this.setState({[path]: obj})
-})
+// .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
+// .then(obj => {
+//   this.setState({[path]: obj})
+// })
+.then(() => this.loadAllData(currentUserId))
 
 deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
-.then(() => ResourceManager.getAll(path, id))
+.then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
+.then(r => {
+  this.setState({
+    [path]: r
+  })
+})
+
+updateItem = (path, object) => ResourceManager.putItem(path, object)
+.then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
 .then(r => {
   this.setState({
     [path]: r
@@ -125,8 +135,11 @@ deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
             // Remove null and return the component which will show news articles
           }}
         />
-        <Route path="/articles/new" render={(props) => {
+        <Route exact path="/articles/new" render={(props) => {
           return <ArticleAddNewForm addItem={this.addItem} {...props} />
+        }} />
+        <Route path="/articles/edit/:articleId(\d+)" render={(props) => {
+          return <ArticleEditForm updateItem={this.updateItem} {...props} />
         }} />
 
         <Route
