@@ -70,6 +70,11 @@ addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStor
 updateTask = (editedTaskObject) => {
   return TaskManager.put(editedTaskObject).then(() => {
     this.loadAllData(sessionStorage.getItem("userID"))
+    .then(tasks => {
+      this.setState({
+        tasks: tasks
+      })
+    })
   })
 }
 onLogin = () => {
