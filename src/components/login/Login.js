@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import "./login.css"
 
 export default class Login extends Component {
 
@@ -29,7 +30,7 @@ export default class Login extends Component {
                     this.props.onLogin();
                     this.props.history.push("/friends")
                 } else {
-                    window.alert("NOT FOUND")
+                    window.alert("Invalid login information. Please try again or register a new account.")
                 }
             })
 
@@ -38,27 +39,45 @@ export default class Login extends Component {
     render() {
         //Renders Login Form
         return (
-            <React.Fragment>
+            <div className="card">
                 <form onSubmit={this.handleLogin}>
-                    <h1>Sign In</h1>
-                    <label htmlFor="userNameInput">Username: </label>
-                    <input onChange={this.handleFieldChange} type="text"
-                        id="userName"
-                        placeholder="Username"
-                        required=""
-                        autoFocus=""
-                    />
-                    <label htmlFor="emailInput">Email: </label>
-                    <input onChange={this.handleFieldChange} type="email"
+                    <h1 className="card-header">Sign In</h1>
+                    <div className="card-body">
+                        <label htmlFor="userNameInput">Username: </label>
+                        <input onChange={this.handleFieldChange}           type="text"
+                            id="userName"
+                            placeholder="Username"
+                            required
+                            autoFocus=""
+                            className="form-control mb-2"
+                        />
+                        <label htmlFor="emailInput">Email: </label>
+                        <input onChange={this.handleFieldChange} type="email"
                         id="email"
                         placeholder="Email"
-                        required=""
-                    />
-                    <button type="submit">
+                        required
+                        className="form-control"
+                        />
+                    </div>
+                    <div className="card-footer login-button-div">
+                        <button 
+                        type="submit"
+                        className="btn btn-primary btn-sm login-button"
+                        >
                         Sign In
-                    </button>
+                        </button>
+                        <button 
+                        type="button"
+                        className="btn btn-info btn-sm login-button"
+                        onClick={() => this.props.history.push("/register")}
+                        >
+                        Register New Account
+                        </button>
+                    </div>
+                    
+                    
                 </form>
-            </React.Fragment>
+            </div>
         )
     }
 }
