@@ -5,7 +5,7 @@ export default class EventList extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="wrapper">
+                <div className="wrapper lineUp">
                     <div className="eventButton">
                         {/* redirects user to page where a new event can be created */}
                         <button type="button" onClick={
@@ -40,7 +40,8 @@ export default class EventList extends Component {
                             event.map(entry => 
                                 <div key={entry.id}>
                                     <div className="card">
-                                        <div className="card-body">
+                                        <div className="card-body friendEvents">
+                                            User: {this.props.users.find(userToFind => entry.userId === userToFind.id).userName}
                                             <h3 className="card-title">
                                                 {entry.event}
                                             </h3>
