@@ -30,7 +30,7 @@ export default class EventEditForm extends Component {
             .then(() => this.props.history.push("/events"))
 
     }
-
+//used to store current state into placeholder fields.
     componentDidMount() {
         ResourceManager.getOneEntry(this.props.match.params.eventId, "events")
             .then(event => {

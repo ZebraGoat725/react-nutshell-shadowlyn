@@ -6,6 +6,7 @@ export default class EventList extends Component {
             <React.Fragment>
                 <div className="wrapper">
                     <div className="eventButton">
+                    {/* redirects user to page where a new event can be created */}
                         <button type="button" onClick={
                             () => {
                                 this.props.history.push("/events/new")
@@ -23,6 +24,7 @@ export default class EventList extends Component {
                                 <button
                                     type="button"
                                     onClick={() => {
+                                        {/* Redirects user to an edit page specific to the individual event */}
                                         this.props.history.push(`/events/${event.id}/edit`);
                                     }}>Edit</button>
                             </div>

@@ -12,6 +12,9 @@ export default class EventForm extends Component {
         stateToChange[event.target.id] = event.target.value;
         this.setState(stateToChange)
     }
+    //Data passed down from ApplicationViews is used to call createEvent,
+    //which adds a new object along with the userId stored in Session Storage
+    //to our JSON database. Redirects users to the main events page
     handleSubmit = (event) => {
         event.preventDefault();
 
