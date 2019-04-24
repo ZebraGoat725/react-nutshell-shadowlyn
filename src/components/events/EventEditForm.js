@@ -30,7 +30,7 @@ export default class EventEditForm extends Component {
             .then(() => this.props.history.push("/events"))
 
     }
-//used to store current state into placeholder fields.
+    //used to store current state into placeholder fields.
     componentDidMount() {
         ResourceManager.getOneEntry(this.props.match.params.eventId, "events")
             .then(event => {
@@ -45,29 +45,33 @@ export default class EventEditForm extends Component {
     render() {
         return (
             <React.Fragment>
-                <div>
-                    <form>
+                <form>
+                    <div className="form-group">
                         <label htmlFor="nameInput">Event Name</label>
-                        <input type="text"
+                        <input className="form-control" type="text"
                             id="event"
                             required
-                            value = {this.state.event}
+                            value={this.state.event}
                             onChange={this.handleFieldChange} />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="dateInput">Event Date</label>
-                        <input type="date"
+                        <input className="form-control" type="date"
                             id="date"
                             required
-                            value = {this.state.date}
+                            value={this.state.date}
                             onChange={this.handleFieldChange} />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="locationInput">Event Location</label>
-                        <input type="text"
+                        <input className="form-control" type="text"
                             id="location"
                             required
-                            value = {this.state.location}
+                            value={this.state.location}
                             onChange={this.handleFieldChange} />
-                        <button onClick={this.updateExistingEvent}>Update Event</button>
-                    </form>
-                </div>
+                    </div>
+                    <button className="btn btn-primary" onClick={this.updateExistingEvent}>Update Event</button>
+                </form>
             </React.Fragment>
         )
     }

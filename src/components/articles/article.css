@@ -1,0 +1,13 @@
+.addNewButton {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonClass{
+    max-width: 80%;
+}
+
+.friends-articles{
+    background-color: cornsilk;
+    font-style: italic;
+}

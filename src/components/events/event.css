@@ -1,0 +1,13 @@
+.card{
+    width: 40vw;
+}
+.friendEvents{
+    background-color: cornsilk;
+    font-style: italic
+}
+.lineUp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}

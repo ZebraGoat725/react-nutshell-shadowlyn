@@ -213,7 +213,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
 
         <Route
           exact path="/articles" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} />
+            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} users={this.state.users} />
             // Remove null and return the component which will show news articles
           }}
         />
@@ -257,7 +257,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
 
         <Route
           exact path="/events" render={props => {
-            return <EventList {...props} events={this.state.events} />
+            return <EventList {...props} users = {this.state.users} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
           }}
         />
         <Route
