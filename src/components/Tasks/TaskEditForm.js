@@ -3,9 +3,9 @@ import TaskManager from '../../modules/TaskManager'
 
 export default class TaskEditForm extends Component {
     state = {
-        task: " ",
-        isComplete: " ",
-        userId: " "
+        task: "",
+        isComplete: "",
+        userId: ""
     };
     // handleFieldChange is a method that sets state to the whatever the value of the input field is.
     handleFieldChange = event => {
@@ -17,7 +17,8 @@ export default class TaskEditForm extends Component {
     UpdateExisitingTask = (event) => {
             event.preventDefault()
             const editedTask = {
-            task: this.props.match.params.taskId,
+            id: Number(this.props.match.params.taskId),
+            task: this.state.task,
             isComplete: "",
             userId: parseInt(sessionStorage.getItem("userID"))
         }
@@ -28,8 +29,9 @@ export default class TaskEditForm extends Component {
     componentDidMount() {
         TaskManager.get(this.props.match.params.taskId)
         .then(task => {
+            console.log(task)
             this.setState({
-                task: task.name,
+                task: task.task,
                 isComplete: "",
                 userId: task.userId
             })
@@ -39,7 +41,7 @@ export default class TaskEditForm extends Component {
     render () {
         return (
             <React.Fragment>
-                <form onSubmit={this.constructNewTask} className="taskForm">
+                <form onSubmit={this.UpdateExisitingTask} className="taskForm">
                     <div className="task-div">
                         <label htmlFor="task">Task: </label>
                         <input
@@ -53,7 +55,7 @@ export default class TaskEditForm extends Component {
                     </div>
                 <button
                 type="submit"
-                onClick={this.updateE}
+                onClick={this.UpdateExisitingTask}
                 className="btn btn-primary">
             Update
                 </button>
