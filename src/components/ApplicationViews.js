@@ -85,15 +85,6 @@ onLogin = () => {
     messageData.update(editedMessage)
       .then(() => this.loadAllData())
   }
-
-  //  getFriendsUserId = (userId) => {
-  //    ResourceManager.getFriendsUserId(userId)
-  //    .then(r => this.setState({
-  //      friendsUserId: r
-  //    }))
-  //  }
-
-
   
   createEvent = (newEvent) => {
     return ResourceManager.postEntry(newEvent, "events")
@@ -114,19 +105,12 @@ onLogin = () => {
     })
   }
 
-  addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-    .then(() => ResourceManager.getAll(path, currentUserId))
-    .then(obj => {
-      this.setState({ [path]: obj })
-    })
-
+  
+  //function is called in ArticleAddNewForm. it performs a post request, then gets all updated data and setState to re render Articles with updated
 addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
-// .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
-// .then(obj => {
-//   this.setState({[path]: obj})
-// })
 .then(() => this.loadAllData(currentUserId))
 
+//function is called when delete button is click, performs delete method, then re loads data with new state
 deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
 .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
 .then(r => {
@@ -135,6 +119,7 @@ deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
   })
 })
 
+//function is called when edit form is saved. performs PUT method and re loads data with new state
 updateItem = (path, object) => ResourceManager.putItem(path, object)
 .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
 .then(r => {

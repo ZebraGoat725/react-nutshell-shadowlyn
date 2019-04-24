@@ -10,12 +10,14 @@ export default class ArticleAddNewForm extends Component {
         url: ""
     }
 
+    //updates state as user types
     handleChange = event => {
         let newState = {}
         newState[event.target.id] = event.target.value
         this.setState(newState)
     }
 
+    //function is called when user submit. creates object to POST and calls function to update state in application view and re routes user to /articles
     postNewItem = event => {
       
         event.preventDefault()

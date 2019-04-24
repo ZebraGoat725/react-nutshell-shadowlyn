@@ -13,12 +13,14 @@ export default class ArticleEditForm extends Component {
         userId: ""
     }
 
+    //updates state as values are entered into input fields for edit form
     handleChange = event => {
         let newState = {}
         newState[event.target.id] = event.target.value
         this.setState(newState)
     }
 
+    //function is called when submit button is clicked, creates object to be planted into a PUT method and calls function to re load data in application views
     updateArticle = (event) => {
         event.preventDefault()
 
@@ -35,6 +37,7 @@ export default class ArticleEditForm extends Component {
         .then(() => this.props.history.push("/articles"))
     }
 
+    //performs fetch call to pre fill the input fields with data
     componentDidMount() {
         ResourceManager.getOneEntry(this.props.match.params.articleId, "articles")
         .then(r => {
@@ -45,6 +48,8 @@ export default class ArticleEditForm extends Component {
             })
         })
     }
+
+    //creates form
     render() {
         return (
             <React.Fragment>

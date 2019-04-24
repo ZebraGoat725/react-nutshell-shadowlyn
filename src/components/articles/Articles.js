@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 
 export default class Articles extends Component {
 
-
+//creates list of articles for user and user's friends
   render() {
-    // console.log(this.props.friendsArticles)
     return (
       <div>
         <u><h1>My Articles</h1></u>

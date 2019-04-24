@@ -1,3 +1,5 @@
+//function is called when timestamp is needed. uses function getdate() and then formats the date into a readable form
+
 export default {
     getDate(date) {
         let monthNames = [
