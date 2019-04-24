@@ -31,7 +31,7 @@ class FriendsList extends Component {
                 }
                 </div>
                 <div className="card-footer">
-                    <UserSearch findFriend={this.props.findFriend}/>
+                    <UserSearch addFriend={this.props.addFriend}/>
                 </div>
             </div>
         )
