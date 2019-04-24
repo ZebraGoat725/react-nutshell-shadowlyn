@@ -1,3 +1,5 @@
+// Author: Rose Wisotzky
+// This component holds our form for adding a new task. Very cool.
 import React, {Component} from 'react'
 
 
@@ -13,6 +15,7 @@ export default class TaskForm extends Component {
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
+    // Over here we are making our new task object! How cool! We're making sure the user can't refresh with preventDefault. We're also sneaking into sessionStorage and grabbing our user's ID to be able to assign that task to them. 
     constructNewTask = (event) => {
             event.preventDefault()
             const newTask = {
@@ -21,12 +24,15 @@ export default class TaskForm extends Component {
             userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props
+        // Over here we're posting our new task to the route that ends with /tasks.
         .addTask(newTask)
         .then(()=>this.props.history.push("/tasks"))
     }
+    // Let's render this! Render lets us build out our JSX that will be displayed on the DOM. What we're rendering here is our form that a user may utilize to add a new task to their list.
     render () {
         return (
             <React.Fragment>
+                {/* This lil section says that when we click our button with the type of submit we are creating our new task object */}
                 <form onSubmit={this.constructNewTask} className="taskForm">
                     <div className="task-div">
                         <label htmlFor="task">Task: </label>
@@ -34,9 +40,9 @@ export default class TaskForm extends Component {
                         type="text"
                         required
                         className="taskFormInput"
+                        // Whenever there is a change in our input, onChange will call handleFieldChange which is located above, if you'd care to read more about that.
                         onChange={this.handleFieldChange}
                         id="task"
-                        value={this.state.task}
                         placeholder="Task Name"></input>
                     </div>
                 <button

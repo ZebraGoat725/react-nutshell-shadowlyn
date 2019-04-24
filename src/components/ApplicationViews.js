@@ -13,6 +13,7 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+import TaskEditForm from './Tasks/TaskEditForm'
 import FriendsList from "./friends/FriendList"
 import Register from "./login/Register"
 import ArticleEditForm from "./articles/ArticleEditForm"
@@ -67,6 +68,17 @@ export default class ApplicationViews extends Component {
       .then(() => this.setState(newState))
   }
 addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
+
+updateTask = (editedTaskObject) => {
+  return TaskManager.put(editedTaskObject).then(() => {
+    ResourceManager.getAll("tasks", 
+    this.loadAllData(sessionStorage.getItem("userID")))
+    .then(tasks => {
+      this.setState({
+        tasks: tasks
+      })
+    })
+})}
 
 onLogin = () => {
   this.setState({
@@ -274,6 +286,10 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
           return <TaskForm {...props}
             addTask={this.addTask}
             />
+        }} />
+
+        <Route path="/tasks/:taskId(\d+)/edit" render={props => {
+          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask} />
         }} />
       </React.Fragment>
     );
