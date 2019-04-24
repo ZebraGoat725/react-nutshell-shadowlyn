@@ -10,6 +10,7 @@ import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
 import FriendsList from "./friends/FriendList"
+import Register from "./login/Register"
 
 export default class ApplicationViews extends Component {
 
@@ -129,9 +130,17 @@ export default class ApplicationViews extends Component {
   }
 
   deleteFriend = (event) => {
-    ResourceManager.deleteItem("friends", Number(event.target.id))
+    ResourceManager.deleteItem("friends", event.target.id)
       .then(() => this.loadAllData(sessionStorage.getItem("userID")))
-      .then(r => this.setState(r))
+      .then(response => this.setState(response))
+  }
+
+  registerUser = (userToRegister) => {
+    return ResourceManager.postEntry(userToRegister, "users")
+    .then(() => ResourceManager.getAllUsers())
+    .then(users => this.setState({
+      users: users
+    }))
   }
 
   
@@ -143,7 +152,14 @@ export default class ApplicationViews extends Component {
           exact path="/login" render={props => {
             return <Login users={this.state.users}
               onLogin={this.onLogin} {...props} />
-            // Remove null and return the component which will handle authentication
+            
+          }}
+        />
+        <Route
+          exact path="/register" render={props => {
+            return <Register users={this.state.users}
+              registerUser={this.registerUser} onLogin={this.onLogin} {...props} />
+            
           }}
         />
 
