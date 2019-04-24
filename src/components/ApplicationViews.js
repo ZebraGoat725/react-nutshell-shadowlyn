@@ -13,6 +13,8 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+import FriendsList from "./friends/FriendList"
+import Register from "./login/Register"
 import ArticleEditForm from "./articles/ArticleEditForm"
 
 export default class ApplicationViews extends Component {
@@ -44,13 +46,13 @@ export default class ApplicationViews extends Component {
       .then(messages => newState.messages = messages)
       .then(() => ResourceManager.getSortedArticles(currentUserId))
       .then(articles => newState.articles = articles)
-      .then(() => ResourceManager.getAll("friends", currentUserId))
+      .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(friends => newState.friends = friends)
       .then(() => ResourceManager.getAll("tasks", currentUserId))
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
-    ResourceManager.getAllUsers()
+      .then(() => ResourceManager.getAllUsers())
       .then(users => newState.users = users)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(r => r.map(entry => entry.user.id))
@@ -75,10 +77,14 @@ onLogin = () => {
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
+  // Passed down as a prop to Messages component. This will post the new message to the database, then it will refresh state with the loadAllData function.
+
   constructNewMessage = (newMessage) => {
     return messageData.post(newMessage)
       .then(() => this.loadAllData(sessionStorage.getItem("userID")))
   }
+
+  // Passed down to the MessageEditForm component. This will do a PUT request with the editedMessage, then call the loadAllData function to update the state with the updated data.
 
   handleMessageUpdate = (editedMessage) => {
 
@@ -110,6 +116,52 @@ onLogin = () => {
 addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object)
 .then(() => this.loadAllData(currentUserId))
 
+
+  // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
+
+  // Next we get the updated list of the user's friends by doing a GET call. Then we take the promise value and update the local state with the response. This state will be used as a prop. If the username isn't found, it will alert the user.
+
+  addFriend = (user) => {
+    if(user.userName){
+      if(user.id === Number(sessionStorage.getItem("userID"))){
+        window.alert("You can't add yourself as a friend.")
+      } else {
+          if(window.confirm(`Would you like to add ${user.userName} as a friend?`)){
+              const newFriend = {
+                userId: user.id,
+                currentUserId: Number(sessionStorage.getItem("userID"))
+              }
+
+              ResourceManager.postItem("friends", newFriend)
+            .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
+            .then(friends => this.setState({
+                friends: friends
+            }))
+            } else {
+                window.alert("Username not found")
+              }
+          }
+      }
+  }
+
+  // The deleteFriend function is passed down to the Friends Component. This handles the functionality of making a DELETE call, and then loading all the updated data from the database with loadAllData. Then updating local state with the promise value.
+
+  deleteFriend = (id) => {
+    return ResourceManager.deleteItem("friends", id)
+      .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+  }
+
+  // The registerUser function is passed down as a prop to Register.js
+  // It makes a POST to the users collection of our database.json. Then we GET the updated list of users, and pass in the promise value to local state.users.
+
+  registerUser = (userToRegister) => {
+    return ResourceManager.postEntry(userToRegister, "users")
+    .then(() => ResourceManager.getAllUsers())
+    .then(users => this.setState({
+      users: users
+    }))
+  }
+
 //function is called when delete button is click, performs delete method, then re loads data with new state
 deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
 .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
@@ -136,7 +188,14 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
           exact path="/login" render={props => {
             return <Login users={this.state.users}
               onLogin={this.onLogin} {...props} />
-            // Remove null and return the component which will handle authentication
+            
+          }}
+        />
+        <Route
+          exact path="/register" render={props => {
+            return <Register users={this.state.users}
+              registerUser={this.registerUser} onLogin={this.onLogin} {...props} />
+            
           }}
         />
 
@@ -156,7 +215,8 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
         <Route
           path="/friends" render={props => {
             if (this.isAuthenticated()) {
-              return <div>Hello</div>
+              return <FriendsList {...props} friends={this.state.friends} addFriend={this.addFriend}
+              deleteFriend={this.deleteFriend}/>
             } else {
               return <Redirect to="/login" />
             }
