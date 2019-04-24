@@ -147,10 +147,8 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
               }
 
               ResourceManager.postItem("friends", newFriend)
-            .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
-            .then(friends => this.setState({
-                friends: friends
-            }))
+              .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+            
             } else {
                 window.alert("Username not found")
               }
@@ -295,3 +293,8 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
     );
   }
 }
+
+// .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
+//             .then(friends => this.setState({
+//                 friends: friends
+//             }))
