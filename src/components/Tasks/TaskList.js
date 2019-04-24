@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
 
 export default class TaskList extends Component {
     render () {
@@ -15,11 +16,7 @@ export default class TaskList extends Component {
                 {
                 this.props.tasks.map(task =>  
                 <div key ={task.id} className="card">
-                    <div className="card-body">
-                        <h5 className="card-title">
-                        Task: </h5>
-                        {task.task}
-                    </div>
+                    <Link className="edit-link" to={`tasks/${task.id}/edit`}>{task.task}</Link>
                 </div>
                 )
                 }

@@ -12,7 +12,7 @@ import EventForm from './events/EventForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
-
+import TaskEditForm from './Tasks/TaskEditForm'
 export default class ApplicationViews extends Component {
 
   state = {
@@ -186,6 +186,10 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
             addTask={this.addTask}
             />
         }} />
+
+        <Route path="/tasks/:taskId(\d+)/edit" render={props => {
+          return <TaskEditForm
+        }}
       </React.Fragment>
     );
   }
