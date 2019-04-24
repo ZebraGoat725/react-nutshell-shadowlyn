@@ -8,12 +8,18 @@ ul  {
     background-color: #5ea3d0;
     border-radius: 8px;
     padding: 4px 8px;
+    max-width: auto;
+    display: inline-block
 }
 
 .userName {
     font-size: 10px;
     opacity: 0.9;
     color: #3e5869
+}
+
+.messages {
+    max-width: 80%;
 }
 
 .message-list {
@@ -34,3 +40,4 @@ ul  {
     padding: 0px 0px;
     margin: 5px;
 }
+
