@@ -33,7 +33,7 @@ export default class Articles extends Component {
           this.props.friendsArticles.map(entry =>
             entry.map(entry =>
               <div className="card text-center" key={entry.id}>
-                <div className="card-body divContainer">
+                <div className="card-body divContainer friends-articles">
                   <h4 className="card-title">{entry.title}</h4>
                   <p className="card-text synopsisClass">{entry.synopsis}</p>
                   <a href={`http://${entry.url}`} target="_blank">{entry.url}</a>
