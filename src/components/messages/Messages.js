@@ -3,6 +3,7 @@
 // The purpose of the Messages component is to build the structure of the chat room. It also contains functionality for sending/editing messages.
 
 import React, { Component } from "react"
+import ResourceManager from "../../modules/ResourceManager"
 import "./messages.css"
 
 class Messages extends Component {
@@ -48,6 +49,20 @@ class Messages extends Component {
         
     }
 
+    // This is the same handleAddFriend that is in the friends directory. The only difference is that the value we are comparing usernames too is the event target (the link in the chatroom)
+
+    handleAddFriend = (event) => {
+        event.preventDefault();
+
+        let userNameToFind = event.target.textContent
+
+            
+        ResourceManager.getAllUsers()
+            .then(userList => userList.find(user => user.userName.toLowerCase() === userNameToFind.toLowerCase()))
+            .then(match => this.props.addFriend(match))
+        
+    }
+
 
     render() {
         return (
@@ -60,7 +75,9 @@ class Messages extends Component {
                         {this.props.messages.map(message => {
                             if (message.userId === Number(sessionStorage.getItem("userID"))) {
                                 return <li className="card-text myMessages" key={message.id}>
-                                    <div className="userName">
+                                    <div className="userName"
+                                    id={message.userId}
+                                    >
                                         {this.props.users.find(user => user.id === message.userId).userName}
                                         <button onClick={() => {
                                             this.props.history.push(`/messages/${message.id}/edit`)
@@ -74,9 +91,12 @@ class Messages extends Component {
                                 </li>
                             } else {
                                 return <li className="card-text otherMessages" key={message.id}>
-                                <div className="userName">
+                                <a className="userName nav-link"
+                                    href=""
+                                    onClick={this.handleAddFriend}
+                                >
                                     {this.props.users.find(user => user.id === message.userId).userName}
-                                </div>
+                                </a>
                                 <div className="message">
                                     {message.message}
                                 </div>
