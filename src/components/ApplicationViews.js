@@ -64,6 +64,11 @@ export default class ApplicationViews extends Component {
   }
 addTask = task => TaskManager.post(task).then(() => this.loadAllData(sessionStorage.getItem("userID")))
 
+updateTask = (editedTaskObject) => {
+  return TaskManager.put(editedTaskObject).then(() => {
+    this.loadAllData(sessionStorage.getItem("userID"))
+  })
+}
 onLogin = () => {
   this.setState({
     userId: sessionStorage.getItem("userID")
@@ -188,8 +193,8 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
         }} />
 
         <Route path="/tasks/:taskId(\d+)/edit" render={props => {
-          return <TaskEditForm
-        }}
+          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask} />
+        }} />
       </React.Fragment>
     );
   }
