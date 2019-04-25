@@ -138,11 +138,13 @@ onLogin = () => {
 
   // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it checks the current user's friends to make sure they aren't already friends. If they are friends, this process will not work and will alert the user. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
 
-  // Next we get the updated list of the user's friends by doing a GET call. Then we take the promise value and update the local state with the response. This state will be used as a prop. If the username isn't found, it will alert the user.
+  // Next we get the updated list of the user's friends, friendsEvents, and friendsArticles by calling this.loadAllData(). This function will update the state, which will then update the props in their respective components. If the username isn't found, it will alert the user.
 
   addFriend = (user) => {
-    if (user.userName) {
-      if (user.id === Number(sessionStorage.getItem("userID"))) {
+    if(!user) {
+      return window.alert("An account with this username doesn't exist")
+    } else if(user.userName){
+      if(user.id === Number(sessionStorage.getItem("userID"))){
         window.alert("You can't add yourself as a friend.")
       } else if (this.state.friends.find(friend => friend.user.userName.toLowerCase() === user.userName)) {
           window.alert("You already have this user as a friend.")
@@ -153,17 +155,16 @@ onLogin = () => {
             currentUserId: Number(sessionStorage.getItem("userID"))
           }
 
-          ResourceManager.postItem("friends", newFriend)
-            .then(() => ResourceManager.getFriendsUserId(Number(sessionStorage.getItem("userID"))))
-            .then(friends => this.setState({
-              friends: friends
-            }))
-        } else {
-          window.alert("Username not found")
-        }
+              ResourceManager.postItem("friends", newFriend)
+              .then(() => this.loadAllData(sessionStorage.getItem("userID")))
+            
+            } else {
+                window.alert("Username not found")
+              }
+          }
       }
     }
-  }
+  
 
   // The deleteFriend function is passed down to the Friends Component. This handles the functionality of making a DELETE call, and then loading all the updated data from the database with loadAllData. Then updating local state with the promise value.
 
@@ -184,7 +185,7 @@ onLogin = () => {
   }
 
   //function is called when delete button is click, performs delete method, then re loads data with new state
-  deleteItem = (path, id) => ResourceManager.deleteItem(path, id)
+  deleteItem = (path, id) => ResourceManager.deleteItem(path, id) 
     .then(() => ResourceManager.getSortedArticles(sessionStorage.getItem("userID")))
     .then(r => {
       this.setState({
@@ -206,7 +207,7 @@ onLogin = () => {
       <React.Fragment>
 
         <Route
-          exact path="/login" render={props => {
+          exact path="/" render={props => {
             return <Login users={this.state.users}
               onLogin={this.onLogin} {...props} />
 
@@ -220,14 +221,17 @@ onLogin = () => {
           }}
         />
 
-        <Route exact path="/articles" render={props => {
-          if (this.isAuthenticated()) {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} users={this.state.users} />
-          } else {
-            return <Redirect to="/login" />
-          }
-        }} />
-
+        <Route
+          exact path="/articles" render={props => {
+            if (this.isAuthenticated()) {
+               return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} users={this.state.users} />
+            } else {
+              return <Redirect to="/" />
+            }
+           
+            // Remove null and return the component which will show news articles
+          }}
+        />
         <Route exact path="/articles/new" render={(props) => {
           return <ArticleAddNewForm addItem={this.addItem} {...props} />
         }} />
@@ -242,7 +246,7 @@ onLogin = () => {
               return <FriendsList {...props} friends={this.state.friends} addFriend={this.addFriend}
                 deleteFriend={this.deleteFriend} />
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
           }}
         />
@@ -251,7 +255,7 @@ onLogin = () => {
             if (this.isAuthenticated()) {
               return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} addFriend={this.addFriend}/>
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
 
 
@@ -262,14 +266,19 @@ onLogin = () => {
             if (this.isAuthenticated()) {
               return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate} />
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
           }}
         />
 
         <Route
           exact path="/events" render={props => {
-            return <EventList {...props} users={this.state.users} friendsEvents={this.state.friendsEvents} events={this.state.events} />
+            if (this.isAuthenticated()){
+              return <EventList {...props} users = {this.state.users} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
+            } else {
+              return <Redirect to="/" />
+            }
+            
           }}
         />
         <Route
@@ -286,22 +295,26 @@ onLogin = () => {
 
         <Route
           exact path="/tasks" render={props => {
-            return <TaskList {...props} tasks={this.state.tasks} patchTask={this.patchTask}
-            />
-            // Remove null and return the component which will show the user's tasks
+            if (this.isAuthenticated()) {
+              return <TaskList {...props} tasks={this.state.tasks}
+              patchTask={this.patchTask}/>
+
+            } else {
+              return <Redirect to="/" />
+            }
           }}
         />
 
         <Route path="/tasks/new" render={(props) => {
           return <TaskForm {...props}
-            addTask={this.addTask}
+            addTask={this.addTask} 
           />
         }} />
 
         <Route path="/tasks/:taskId(\d+)/edit" render={props => {
-          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask} />
+          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask}  />
         }} />
       </React.Fragment>
-    );
+    )
   }
 }

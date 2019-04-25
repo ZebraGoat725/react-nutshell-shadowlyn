@@ -11,3 +11,8 @@
     align-items: center;
     text-align: center;
 }
+
+.upcoming {
+    font-size: 4em;
+    font-weight: bolder
+}
