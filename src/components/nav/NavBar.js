@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 
@@ -24,6 +24,7 @@ class NavBar extends Component {
                         <Link className="nav-link" to="/tasks">Tasks</Link>
                     </li>
                 </ul>
+                <Link className="mr-1" onClick={() => sessionStorage.clear()} to="/login">Logout</Link>
             </nav>
         )
     }

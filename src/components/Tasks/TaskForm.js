@@ -20,7 +20,7 @@ export default class TaskForm extends Component {
             event.preventDefault()
             const newTask = {
             task: this.state.task,
-            isComplete: "",
+            isComplete: false,
             userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props
