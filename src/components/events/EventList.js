@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './event.css'
 
 export default class EventList extends Component {
+    
     render() {
         return (
             <React.Fragment>
@@ -20,6 +21,7 @@ export default class EventList extends Component {
                                 <div className="card events">
                                     <div className="card-body">
                                         <h3 className="card-title">
+                                        
                                             {event.event}
                                         </h3>
                                         <div className="card-text">Where: {event.location}</div>
