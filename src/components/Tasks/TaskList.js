@@ -3,8 +3,19 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 
+
 export default class TaskList extends Component {
+    taskComplete(taskId) {
+        const object = {
+            id: taskId,
+            isComplete: true,
+            userId: parseInt(sessionStorage.getItem("userID"))
+        }
+        this.props.patchTask(object)
+    }
+
     render () {
+        console.log(this.props.tasks)
         return (
             <React.Fragment>
                 <div className="newTask">
@@ -21,7 +32,12 @@ export default class TaskList extends Component {
                 {
                 this.props.tasks.map(task =>  
                 <div key ={task.id} className="card">
-                    <Link className="edit-link" to={`tasks/${task.id}/edit`}>{task.task}</Link>
+                    <label>Hey buddy, you should TOTALLY <Link className="edit-link" to={`tasks/${task.id}/edit`}>{task.task}</Link> </label>
+                    <label>Wait, you already did that? Check this box my guy <input type="checkbox"
+                    onClick = {() => {
+                        this.taskComplete(task.id)
+                    }}
+                    ></input></label>
                 </div>
                 )
                 }
