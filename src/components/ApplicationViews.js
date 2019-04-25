@@ -134,7 +134,9 @@ addItem = (path, object, currentUserId) => ResourceManager.postItem(path, object
   // Next we get the updated list of the user's friends, friendsEvents, and friendsArticles by calling this.loadAllData(). This function will update the state, which will then update the props in their respective components. If the username isn't found, it will alert the user.
 
   addFriend = (user) => {
-    if(user.userName){
+    if(!user) {
+      return window.alert("An account with this username doesn't exist")
+    } else if(user.userName){
       if(user.id === Number(sessionStorage.getItem("userID"))){
         window.alert("You can't add yourself as a friend.")
       } else if (this.state.friends.find(friend => friend.user.userName.toLowerCase() === user.userName)) {
@@ -197,7 +199,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
       <React.Fragment>
 
         <Route
-          exact path="/login" render={props => {
+          exact path="/" render={props => {
             return <Login users={this.state.users}
               onLogin={this.onLogin} {...props} />
             
@@ -213,7 +215,12 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
 
         <Route
           exact path="/articles" render={props => {
-            return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} users={this.state.users} />
+            if (this.isAuthenticated()) {
+               return <Articles articles={this.state.articles} friendsArticles={this.state.friendsArticles} {...props} addItem={this.addItem} deleteItem={this.deleteItem} users={this.state.users} />
+            } else {
+              return <Redirect to="/" />
+            }
+           
             // Remove null and return the component which will show news articles
           }}
         />
@@ -230,7 +237,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
               return <FriendsList {...props} friends={this.state.friends} addFriend={this.addFriend}
               deleteFriend={this.deleteFriend}/>
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
           }}
         />
@@ -239,7 +246,7 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
             if (this.isAuthenticated()) {
               return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} addFriend={this.addFriend}/>
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
 
 
@@ -250,14 +257,19 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
             if (this.isAuthenticated()) {
               return <EditMessageForm {...props} messages={this.state.messages} users={this.state.users} handleMessageUpdate={this.handleMessageUpdate} />
             } else {
-              return <Redirect to="/login" />
+              return <Redirect to="/" />
             }
           }}
         />
 
         <Route
           exact path="/events" render={props => {
-            return <EventList {...props} users = {this.state.users} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
+            if (this.isAuthenticated()){
+              return <EventList {...props} users = {this.state.users} friendsEvents = {this.state.friendsEvents} events={this.state.events} />
+            } else {
+              return <Redirect to="/" />
+            }
+            
           }}
         />
         <Route
@@ -274,9 +286,12 @@ updateItem = (path, object) => ResourceManager.putItem(path, object)
 
         <Route
           exact path="/tasks" render={props => {
-            return <TaskList {...props} tasks={this.state.tasks}
-            />
-            // Remove null and return the component which will show the user's tasks
+            if (this.isAuthenticated()) {
+              return <TaskList {...props} tasks={this.state.tasks}/>
+
+            } else {
+              return <Redirect to="/" />
+            }
           }}
         />
 
