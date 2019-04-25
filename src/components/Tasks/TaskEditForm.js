@@ -22,7 +22,7 @@ export default class TaskEditForm extends Component {
             const editedTask = {
             id: Number(this.props.match.params.taskId),
             task: this.state.task,
-            isComplete: "",
+            isComplete: false,
             userId: parseInt(sessionStorage.getItem("userID"))
         }
         this.props.updateTask(editedTask)
@@ -36,7 +36,7 @@ export default class TaskEditForm extends Component {
             console.log(task)
             this.setState({
                 task: task.task,
-                isComplete: "",
+                isComplete: false,
                 userId: task.userId
             })
             

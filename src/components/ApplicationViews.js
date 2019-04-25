@@ -49,7 +49,7 @@ export default class ApplicationViews extends Component {
       .then(articles => newState.articles = articles)
       .then(() => ResourceManager.getFriendsUserId(currentUserId))
       .then(friends => newState.friends = friends)
-      .then(() => ResourceManager.getAll("tasks", currentUserId))
+      .then(() => TaskManager.getFalseTask(currentUserId))
       .then(tasks => newState.tasks = tasks)
       .then(() => ResourceManager.getAll("events", currentUserId))
       .then(events => newState.events = events)
@@ -76,15 +76,16 @@ export default class ApplicationViews extends Component {
     this.loadAllData(this.state.userId)
   }
 updateTask = (editedTaskObject) => {
-  return TaskManager.put(editedTaskObject).then(() => {
-    ResourceManager.getAll("tasks", 
-    this.loadAllData(sessionStorage.getItem("userID")))
-    .then(tasks => {
-      this.setState({
-        tasks: tasks
-      })
+    return TaskManager.put(editedTaskObject).then(() => {
+      this.loadAllData(editedTaskObject.userId)
     })
-})}
+}
+
+patchTask = (patchObject) => {
+  return TaskManager.patchTask(patchObject).then(() => {
+    this.loadAllData(patchObject.userId)
+  })
+}
 
 onLogin = () => {
   this.setState({
@@ -285,7 +286,7 @@ onLogin = () => {
 
         <Route
           exact path="/tasks" render={props => {
-            return <TaskList {...props} tasks={this.state.tasks}
+            return <TaskList {...props} tasks={this.state.tasks} patchTask={this.patchTask}
             />
             // Remove null and return the component which will show the user's tasks
           }}
