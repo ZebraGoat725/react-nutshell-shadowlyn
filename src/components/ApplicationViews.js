@@ -75,9 +75,6 @@ updateTask = (editedTaskObject) => {
     })
 }
 
-//   return TaskManager.put(editedTaskObject).then(() => {
-//     loadAllData(editedTaskObject.userId)
-//   }
 patchTask = (patchObject) => {
   return TaskManager.patchTask(patchObject).then(() => {
     this.loadAllData(patchObject.userId)

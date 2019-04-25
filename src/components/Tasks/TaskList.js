@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom'
 
 
 export default class TaskList extends Component {
+    // This method creates the completed object and sets the isComplete value from false to true.
     taskComplete(taskId) {
         const object = {
             id: taskId,
             isComplete: true,
             userId: parseInt(sessionStorage.getItem("userID"))
         }
+        // Here we're calling patchTask to update only the isComplete key value. Sick! How convenient!
         this.props.patchTask(object)
     }
 
@@ -32,7 +34,9 @@ export default class TaskList extends Component {
                 {
                 this.props.tasks.map(task =>  
                 <div key ={task.id} className="card">
+                {/* Our handy dandy link to the task edit */}
                     <label>Hey buddy, you should TOTALLY <Link className="edit-link" to={`tasks/${task.id}/edit`}>{task.task}</Link> </label>
+                    {/* Oh wow, look at that, a task that you ACTUALLY completed (it's about time). Here's a cool checkbox that when you click it calls the taskComplete. If you're just skimming this buddy, go scroll on up to the top of this component and refresh your memory. */}
                     <label>Wait, you already did that? Check this box my guy <input type="checkbox"
                     onClick = {() => {
                         this.taskComplete(task.id)
