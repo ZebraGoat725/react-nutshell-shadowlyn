@@ -15,5 +15,14 @@ export default {
             },
             body: JSON.stringify(newTask)
         }).then(task=>task.json())
+    },
+    put(editedTask) {
+        return fetch(`${remoteURL}/tasks/${editedTask.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(editedTask)
+    }).then(response => response.json())
     }
 }

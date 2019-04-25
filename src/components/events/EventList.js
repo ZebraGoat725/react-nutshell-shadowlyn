@@ -17,7 +17,7 @@ export default class EventList extends Component {
                     {
                         this.props.events.map(event =>
                             <div key={event.id}>
-                                <div className="card">
+                                <div className="card events">
                                     <div className="card-body">
                                         <h3 className="card-title">
                                             {event.event}
@@ -39,7 +39,7 @@ export default class EventList extends Component {
                         this.props.friendsEvents.map(event =>
                             event.map(entry => 
                                 <div key={entry.id}>
-                                    <div className="card">
+                                    <div className="card events">
                                         <div className="card-body friendEvents">
                                             User: {this.props.users.find(userToFind => entry.userId === userToFind.id).userName}
                                             <h3 className="card-title">

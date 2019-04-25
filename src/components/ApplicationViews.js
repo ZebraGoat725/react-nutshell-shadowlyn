@@ -13,6 +13,7 @@ import EventEditForm from './events/EventEditForm'
 import EventList from './events/EventList'
 import Articles from "./articles/Articles"
 import ArticleAddNewForm from "./articles/ArticleAddNewForm"
+import TaskEditForm from './Tasks/TaskEditForm'
 import FriendsList from "./friends/FriendList"
 import Register from "./login/Register"
 import ArticleEditForm from "./articles/ArticleEditForm"
@@ -74,6 +75,23 @@ export default class ApplicationViews extends Component {
     })
     this.loadAllData(this.state.userId)
   }
+updateTask = (editedTaskObject) => {
+  return TaskManager.put(editedTaskObject).then(() => {
+    ResourceManager.getAll("tasks", 
+    this.loadAllData(sessionStorage.getItem("userID")))
+    .then(tasks => {
+      this.setState({
+        tasks: tasks
+      })
+    })
+})}
+
+onLogin = () => {
+  this.setState({
+    userId: sessionStorage.getItem("userID")
+  })
+  this.loadAllData(this.state.userId)
+}
 
   isAuthenticated = () => sessionStorage.getItem("userID") !== null
 
@@ -117,7 +135,7 @@ export default class ApplicationViews extends Component {
     .then(() => this.loadAllData(currentUserId))
 
 
-  // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
+  // The addFriend function is passed down to the userSearch component in the friends directory. It makes sure that the user isn't trying to add him/herself as a friend. Then it checks the current user's friends to make sure they aren't already friends. If they are friends, this process will not work and will alert the user. Then it will ask if the user is sure he/she wants to add this user as a friend. If so, we will create the newFriend object. The userId is the id of the user passed in as an argument. The currentUserId is grabbed from sessionStorage. Then we make a POST to the friends collection of our database.JSON. 
 
   // Next we get the updated list of the user's friends by doing a GET call. Then we take the promise value and update the local state with the response. This state will be used as a prop. If the username isn't found, it will alert the user.
 
@@ -125,6 +143,8 @@ export default class ApplicationViews extends Component {
     if (user.userName) {
       if (user.id === Number(sessionStorage.getItem("userID"))) {
         window.alert("You can't add yourself as a friend.")
+      } else if (this.state.friends.find(friend => friend.user.userName.toLowerCase() === user.userName)) {
+          window.alert("You already have this user as a friend.")
       } else {
         if (window.confirm(`Would you like to add ${user.userName} as a friend?`)) {
           const newFriend = {
@@ -228,7 +248,7 @@ export default class ApplicationViews extends Component {
         <Route
           exact path="/messages" render={props => {
             if (this.isAuthenticated()) {
-              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} />
+              return <Messages {...props} messages={this.state.messages} users={this.state.users} sendMessage={this.constructNewMessage} addFriend={this.addFriend}/>
             } else {
               return <Redirect to="/login" />
             }
@@ -275,6 +295,10 @@ export default class ApplicationViews extends Component {
           return <TaskForm {...props}
             addTask={this.addTask}
           />
+        }} />
+
+        <Route path="/tasks/:taskId(\d+)/edit" render={props => {
+          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask} />
         }} />
       </React.Fragment>
     );
