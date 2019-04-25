@@ -24,5 +24,19 @@ export default {
         },
         body: JSON.stringify(editedTask)
     }).then(response => response.json())
+    },
+    // This fetch call grabs the tasks that the user who is logged in has not completed with the boolean value of false.
+    getFalseTask(id) {
+        return fetch(`${remoteURL}/tasks?isComplete=false&userId=${id}`).then(task => task.json())
+    },
+    
+    patchTask(object) {
+        return fetch(`${remoteURL}/tasks/${object.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(object)
+        }).then(task => task.json())
     }
 }
