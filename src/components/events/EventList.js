@@ -2,7 +2,23 @@ import React, { Component } from 'react'
 import './event.css'
 
 export default class EventList extends Component {
-    
+
+
+    //Finds the most upcoming date in relation to the current date/time
+    findUpcoming = () => {
+        let currDate = Date.now();
+        let testArr = this.props.events.map(event => { return Date.parse(event.date) })
+        testArr.push(currDate)
+        testArr.sort((a, b) => a - b)
+        let date = new Date(currDate)
+
+        let dateAfterIndex = testArr.indexOf(currDate) + 1
+        let dateAfter = new Date(testArr[dateAfterIndex])
+        let findDate = this.props.events.find(event => Date.parse(event.date) === Date.parse(dateAfter))
+        return findDate
+
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -16,16 +32,29 @@ export default class EventList extends Component {
                         }>Create New Event</button>
                     </div>
                     {
-                        this.props.events.map(event =>
+                        this.props.events.map((event, index) =>
                             <div key={event.id}>
                                 <div className="card events">
                                     <div className="card-body">
-                                        <h3 className="card-title">
-                                        
-                                            {event.event}
-                                        </h3>
+
+                                        {
+                                            //conditionally renders event that is coming up the soonest
+                                            (event === this.findUpcoming()) ?
+                                                (
+                                                    <h1 className="card-title">
+                                                        {event.event}
+                                                    </h1>
+                                                )
+                                                :
+                                                (
+                                                    <h5 className="card-title">
+                                                        {event.event}
+                                                    </h5>
+                                                )
+                                        }
                                         <div className="card-text">Where: {event.location}</div>
                                         <div className="card-text">When: {event.date}</div>
+
                                         <button className="btn btn-primary"
                                             type="button"
                                             onClick={() => {
@@ -39,7 +68,7 @@ export default class EventList extends Component {
                     }
                     {
                         this.props.friendsEvents.map(event =>
-                            event.map(entry => 
+                            event.map(entry =>
                                 <div key={entry.id}>
                                     <div className="card events">
                                         <div className="card-body friendEvents">
