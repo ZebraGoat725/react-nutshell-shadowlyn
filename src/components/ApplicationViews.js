@@ -296,7 +296,8 @@ onLogin = () => {
         <Route
           exact path="/tasks" render={props => {
             if (this.isAuthenticated()) {
-              return <TaskList {...props} tasks={this.state.tasks}/>
+              return <TaskList {...props} tasks={this.state.tasks}
+              patchTask={this.patchTask}/>
 
             } else {
               return <Redirect to="/" />
@@ -306,12 +307,12 @@ onLogin = () => {
 
         <Route path="/tasks/new" render={(props) => {
           return <TaskForm {...props}
-            addTask={this.addTask}
+            addTask={this.addTask} 
           />
         }} />
 
         <Route path="/tasks/:taskId(\d+)/edit" render={props => {
-          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask} />
+          return <TaskEditForm {...props} tasks={this.state.tasks} updateTask={this.updateTask}  />
         }} />
       </React.Fragment>
     )
