@@ -20,8 +20,6 @@ After that, open up your editor. You're going to need to do the following:
 + 3. While in the `api` directory, make a new file and call it `database.json`
 + 4. Cmd + V (on Mac) or Ctrl + V (on Windows) to paste `database.json.example` into `database.json`
 
-```
-
 You will need to install node modules, run the command
 
 ```
@@ -76,4 +74,4 @@ json-server -p 5002 -w database.json
 ## Acknowledgments
 
 * Inspiration
-* [PurpleBooth](https://gist.githubusercontent.com/PurpleBooth/109311bb0361f32d87a2/raw/8254b53ab8dcb18afc64287aaddd9e5b6059f880/README-Template.md) - For their template
+* PurpleBooth - For their template
