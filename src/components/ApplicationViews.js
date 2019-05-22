@@ -17,6 +17,7 @@ import TaskEditForm from './Tasks/TaskEditForm'
 import FriendsList from "./friends/FriendList"
 import Register from "./login/Register"
 import ArticleEditForm from "./articles/ArticleEditForm"
+import firebase from "./firebase/Firebase"
 
 export default class ApplicationViews extends Component {
 
