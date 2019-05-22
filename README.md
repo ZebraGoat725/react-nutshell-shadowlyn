@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 First, you'll need to clone down the repo into a directory. Open your terminal and enter
 
 ```
-git clone git@github.com:ZebraGoat725/react-nutshell-shadowlyn.git
+git clone git@github.com:c31-shadowlyn/react-nutshell-shadowlyn.git
 ```
 
 After that, open up your editor. You're going to need to do the following:
